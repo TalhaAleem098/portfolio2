@@ -1,0 +1,181 @@
+@import "tailwindcss";
+
+/* pull in Tailwind first */
+@import "tailwindcss";
+
+/*
+  Rollback is shipped in separate TrueType files for each weight.
+  Browsers require a distinct @font-face rule per weight/style unless you
+  have a single *variable* font file (e.g. woff2 with variations).
+  If you can obtain a variable version of Rollback you could replace all
+  of the rules below with one declaration that uses `font-weight: 100 900`
+  and `font-style: normal`.
+
+  For now the project keeps the individual weights, but we only need the
+  normal style since italics are not used anywhere in the site.
+  Removing the italic entries reduces the number of HTTP requests and
+  eliminates unnecessary bytes.
+*/
+
+@font-face {
+  font-family: 'Rollback';
+  src: url('/fonts/rollback/RollboxThin-ywad5.ttf') format('truetype');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rollback';
+  src: url('/fonts/rollback/RollboxExtraLight-p7PYy.ttf') format('truetype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rollback';
+  src: url('/fonts/rollback/RollboxLight-VGAXy.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rollback';
+  src: url('/fonts/rollback/RollboxSemiLight-6YzW6.ttf') format('truetype');
+  font-weight: 350;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rollback';
+  src: url('/fonts/rollback/RollboxRegular-jE2lv.ttf') format('truetype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rollback';
+  src: url('/fonts/rollback/RollboxMedium-JRxYB.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rollback';
+  src: url('/fonts/rollback/RollboxSemiBold-z8EP1.ttf') format('truetype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rollback';
+  src: url('/fonts/rollback/RollboxBold-OVxvO.ttf') format('truetype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rollback';
+  src: url('/fonts/rollback/RollboxExtraBold-3zV4X.ttf') format('truetype');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Rollback';
+  src: url('/fonts/rollback/RollboxBlack-axn3a.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/*
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+*/
+
+body, html {
+  font-family: 'Rollback', sans-serif;
+  background: #B8B8B8;
+}
+
+@layer utilities {
+  .font-rollback {
+    font-family: 'Rollback', sans-serif;
+  }
+  
+  .font-thin { font-weight: 100; }
+  .font-extralight { font-weight: 200; }
+  .font-light { font-weight: 300; }
+  .font-semilight { font-weight: 350; }
+  .font-normal { font-weight: 400; }
+  .font-medium { font-weight: 500; }
+  .font-semibold { font-weight: 600; }
+  .font-bold { font-weight: 700; }
+  .font-extrabold { font-weight: 800; }
+  .font-black { font-weight: 900; }
+  
+  .text-nav-small {
+    @apply text-xs leading-none;
+  }
+  
+  .text-nav-base {
+    @apply text-sm leading-none;
+  }
+}
+
+/* Hide scrollbar for horizontal scroll sections */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== Hero section responsive heights ===== */
+
+/* Background name text – vw-based sizing for full-width coverage */
+.hero-bg-name {
+  font-size: 10vw;
+  line-height: 1;
+}
+
+/* Tablet hero: cap to half-screen on tall tablets, managed size on short ones */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .hero-tablet-height {
+    height: clamp(400px, 50vh, 600px);
+    min-height: 380px;
+  }
+
+  .hero-bg-name {
+    font-size: 12vw;
+  }
+}
+
+/* Short phones / landscape – slightly smaller bg text */
+@media (max-width: 767px) and (max-height: 500px) {
+  .hero-bg-name {
+    font-size: 14vw;
+  }
+}

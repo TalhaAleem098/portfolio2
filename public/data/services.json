@@ -1,0 +1,202 @@
+[
+  {
+    "id": "web-design",
+    "title": "Web Design",
+    "tagline": "Transform your creative ideas into reality with expert design",
+    "shortDescription": "We create modern, responsive, stunning websites",
+    "image": "/images/web-design.png",
+    "aspect": "15/11",
+    "heroDescription": "We craft visually stunning, responsive websites that captivate audiences and drive results. Every pixel is placed with purpose to deliver an exceptional user experience.",
+    "features": [
+      {
+        "title": "Responsive Layouts",
+        "description": "Pixel-perfect designs that look incredible on every device — from ultra-wide desktops to mobile screens."
+      },
+      {
+        "title": "Custom UI Systems",
+        "description": "Bespoke design systems and component libraries tailored to your brand identity and business goals."
+      },
+      {
+        "title": "Performance Optimized",
+        "description": "Blazing-fast load times with optimized assets, lazy loading, and modern image formats."
+      },
+      {
+        "title": "SEO-Friendly Structure",
+        "description": "Semantic HTML, structured data, and accessibility-first approach to maximize search visibility."
+      }
+    ],
+    "process": [
+      "Discovery & Research",
+      "Wireframing & Prototyping",
+      "Visual Design & UI",
+      "Development & Testing",
+      "Launch & Optimization"
+    ],
+    "technologies": ["Figma", "Next.js", "Tailwind CSS", "Framer Motion", "GSAP"],
+    "stats": {
+      "projectsCompleted": "30+",
+      "clientSatisfaction": "98%",
+      "avgDelivery": "2 Weeks"
+    }
+  },
+  {
+    "id": "app-design",
+    "title": "App Design",
+    "tagline": "We create sleek, intuitive app designs that enhance user experiences",
+    "shortDescription": "We create sleek, intuitive app designs\nthat enhance user experiences",
+    "image": "/images/app-design.png",
+    "aspect": "3/4",
+    "heroDescription": "From concept to polished prototype, we design mobile applications that users love. Intuitive navigation, beautiful interfaces, and seamless interactions are at the core of everything we build.",
+    "features": [
+      {
+        "title": "User-Centered Design",
+        "description": "Research-driven design decisions that prioritize user needs, behaviors, and expectations."
+      },
+      {
+        "title": "Interactive Prototypes",
+        "description": "High-fidelity prototypes with realistic interactions so you can test and validate before development."
+      },
+      {
+        "title": "Design Systems",
+        "description": "Scalable component libraries and style guides that ensure consistency across your entire application."
+      },
+      {
+        "title": "Cross-Platform Design",
+        "description": "Cohesive experiences across iOS and Android while respecting each platform's design language."
+      }
+    ],
+    "process": [
+      "User Research & Analysis",
+      "Information Architecture",
+      "Wireframes & User Flows",
+      "High-Fidelity Mockups",
+      "Prototype & Handoff"
+    ],
+    "technologies": ["Figma", "Adobe XD", "Sketch", "InVision", "Principle"],
+    "stats": {
+      "projectsCompleted": "20+",
+      "clientSatisfaction": "97%",
+      "avgDelivery": "3 Weeks"
+    }
+  },
+  {
+    "id": "frontend-development",
+    "title": "Front-End Development",
+    "tagline": "Building fast, interactive, and accessible user interfaces",
+    "shortDescription": "Modern front-end solutions with cutting-edge frameworks",
+    "image": "/images/react-dev.png",
+    "aspect": "16/10",
+    "heroDescription": "We bring designs to life with clean, maintainable, and high-performance front-end code. Every interaction is smooth, every animation is buttery, and every component is built to scale.",
+    "features": [
+      {
+        "title": "Modern Frameworks",
+        "description": "Expert-level React, Next.js, and Vue.js development with server-side rendering and static generation."
+      },
+      {
+        "title": "Smooth Animations",
+        "description": "GPU-accelerated animations with GSAP and Framer Motion that make interfaces feel alive."
+      },
+      {
+        "title": "Component Architecture",
+        "description": "Modular, reusable components with clean separation of concerns and thorough documentation."
+      },
+      {
+        "title": "Accessibility First",
+        "description": "WCAG-compliant interfaces with proper ARIA attributes, keyboard navigation, and screen reader support."
+      }
+    ],
+    "process": [
+      "Architecture Planning",
+      "Component Development",
+      "State Management Setup",
+      "API Integration",
+      "Testing & Deployment"
+    ],
+    "technologies": ["React", "Next.js", "TypeScript", "Tailwind CSS", "GSAP"],
+    "stats": {
+      "projectsCompleted": "25+",
+      "clientSatisfaction": "99%",
+      "avgDelivery": "2 Weeks"
+    }
+  },
+  {
+    "id": "backend-development",
+    "title": "Back-End Development",
+    "tagline": "Robust, scalable server-side architecture for your applications",
+    "shortDescription": "Powerful APIs and server solutions built to scale",
+    "image": "/images/ecommerce.png",
+    "aspect": "16/10",
+    "heroDescription": "We engineer rock-solid backend systems that power your applications with reliability, security, and speed. From RESTful APIs to real-time systems, we build the engine behind your product.",
+    "features": [
+      {
+        "title": "API Development",
+        "description": "RESTful and GraphQL APIs with proper authentication, rate limiting, and comprehensive documentation."
+      },
+      {
+        "title": "Database Design",
+        "description": "Optimized database schemas, efficient queries, and proper indexing for both SQL and NoSQL databases."
+      },
+      {
+        "title": "Cloud Infrastructure",
+        "description": "Scalable cloud deployments on AWS, Vercel, or DigitalOcean with CI/CD pipelines and monitoring."
+      },
+      {
+        "title": "Security & Auth",
+        "description": "Secure authentication flows, data encryption, input validation, and protection against common vulnerabilities."
+      }
+    ],
+    "process": [
+      "Requirements Analysis",
+      "System Architecture",
+      "Database Modeling",
+      "API Development",
+      "Testing & Deployment"
+    ],
+    "technologies": ["Node.js", "Express", "MongoDB", "PostgreSQL", "Redis"],
+    "stats": {
+      "projectsCompleted": "18+",
+      "clientSatisfaction": "96%",
+      "avgDelivery": "3 Weeks"
+    }
+  },
+  {
+    "id": "360-development",
+    "title": "360 Development",
+    "tagline": "From front-end to back-end, we deliver clean, efficient code",
+    "shortDescription": "From front-end to back-end, we deliver\nclean, efficient code",
+    "image": "/images/360-dev.png",
+    "aspect": "1/1",
+    "heroDescription": "End-to-end product development that covers every layer of your application. We handle everything — from the user interface to the server infrastructure — so you get a complete, production-ready product.",
+    "features": [
+      {
+        "title": "Full-Stack Architecture",
+        "description": "Unified codebase strategy with shared types, validation logic, and seamless front-to-back integration."
+      },
+      {
+        "title": "DevOps & CI/CD",
+        "description": "Automated testing, continuous integration, and zero-downtime deployment pipelines."
+      },
+      {
+        "title": "Real-Time Features",
+        "description": "WebSocket integrations, live notifications, and real-time data synchronization across clients."
+      },
+      {
+        "title": "Scalable Systems",
+        "description": "Microservices architecture, load balancing, and horizontal scaling strategies for growing applications."
+      }
+    ],
+    "process": [
+      "Discovery & Strategy",
+      "Full-Stack Architecture",
+      "Parallel Development",
+      "Integration & QA",
+      "Launch & Monitoring"
+    ],
+    "technologies": ["Next.js", "Node.js", "MongoDB", "Tailwind CSS", "Docker"],
+    "stats": {
+      "projectsCompleted": "15+",
+      "clientSatisfaction": "98%",
+      "avgDelivery": "4 Weeks"
+    }
+  }
+]

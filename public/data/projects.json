@@ -1,0 +1,132 @@
+[
+  {
+    "id": "react-development",
+    "title": "React Development",
+    "category": "Front-End",
+    "image": "/images/react-dev.png",
+    "tagline": "A high-performance React application built for scale",
+    "description": "Built a complex React application with custom hooks, state management, and seamless API integration. The project featured real-time data updates, advanced filtering, and a component-driven architecture that made the codebase easy to maintain and extend.",
+    "client": "TechNova Solutions",
+    "duration": "6 Weeks",
+    "year": "2025",
+    "liveUrl": "#",
+    "highlights": [
+      "Custom hook library for reusable business logic",
+      "Real-time data synchronization with WebSockets",
+      "Optimized rendering with React.memo and useMemo",
+      "Comprehensive unit and integration test coverage"
+    ],
+    "technologies": ["React", "TypeScript", "Redux Toolkit", "Tailwind CSS", "Jest"],
+    "challenge": "The client needed a dashboard that could handle thousands of real-time data points without performance degradation, while remaining intuitive for non-technical users.",
+    "solution": "We implemented virtualized lists, debounced state updates, and a smart caching layer that reduced API calls by 60%. The UI was designed with progressive disclosure to keep the interface clean.",
+    "results": {
+      "performance": "95+ Lighthouse Score",
+      "loadTime": "< 1.2s",
+      "userSatisfaction": "4.9/5"
+    }
+  },
+  {
+    "id": "app-design-development",
+    "title": "App Design & Development",
+    "category": "Mobile",
+    "image": "/images/app-development.png",
+    "tagline": "End-to-end mobile app from concept to App Store",
+    "description": "Designed and developed a cross-platform mobile application from the ground up. The project spanned user research, wireframing, high-fidelity design, and full development with React Native, delivering a polished product ready for both iOS and Android stores.",
+    "client": "GreenSpaces Inc.",
+    "duration": "10 Weeks",
+    "year": "2025",
+    "liveUrl": "#",
+    "highlights": [
+      "Cross-platform React Native codebase for iOS & Android",
+      "Offline-first architecture with local data persistence",
+      "Push notifications and in-app messaging system",
+      "Smooth 60fps animations and gesture-driven navigation"
+    ],
+    "technologies": ["React Native", "Expo", "Firebase", "Figma", "Reanimated"],
+    "challenge": "The client wanted a single codebase that felt truly native on both platforms, with offline capabilities for users in areas with spotty connectivity.",
+    "solution": "We used React Native with platform-specific components where needed, AsyncStorage for offline data, and a background sync queue that reconciled data when connectivity returned.",
+    "results": {
+      "performance": "4.8 App Store Rating",
+      "loadTime": "< 2s Cold Start",
+      "userSatisfaction": "10K+ Downloads"
+    }
+  },
+  {
+    "id": "course-website",
+    "title": "Course Website",
+    "category": "Full-Stack",
+    "image": "/images/course.webp",
+    "tagline": "A modern e-learning platform with video streaming",
+    "description": "Developed a comprehensive e-learning platform featuring video streaming, course progress tracking, quizzes, certificates, and a full payment integration. The admin dashboard allows instructors to manage content, track analytics, and communicate with students.",
+    "client": "EduTech Academy",
+    "duration": "8 Weeks",
+    "year": "2024",
+    "liveUrl": "#",
+    "highlights": [
+      "Adaptive video streaming with multiple quality levels",
+      "Interactive quizzes with instant feedback and scoring",
+      "Automated certificate generation upon course completion",
+      "Instructor analytics dashboard with revenue tracking"
+    ],
+    "technologies": ["Next.js", "Node.js", "MongoDB", "Stripe", "AWS S3"],
+    "challenge": "Building a platform that could handle concurrent video streams while maintaining fast page loads and a smooth user experience across all devices.",
+    "solution": "We implemented HLS video streaming with adaptive bitrate, edge caching for static assets, and a microservices architecture that separated video processing from the main application server.",
+    "results": {
+      "performance": "99.9% Uptime",
+      "loadTime": "< 1.5s",
+      "userSatisfaction": "500+ Students"
+    }
+  },
+  {
+    "id": "magazine-app",
+    "title": "Magazine App",
+    "category": "Design",
+    "image": "/images/app-design.png",
+    "tagline": "A beautifully crafted digital magazine experience",
+    "description": "Designed a premium digital magazine application with immersive reading experiences, dynamic layouts, and gesture-driven navigation. The design focused on typography, whitespace, and visual storytelling to create an experience that felt as luxurious as print.",
+    "client": "Luxe Publishing",
+    "duration": "5 Weeks",
+    "year": "2024",
+    "liveUrl": "#",
+    "highlights": [
+      "Magazine-quality typography and layout system",
+      "Swipe-based navigation with parallax transitions",
+      "Dark and light reading modes with auto-switching",
+      "Bookmark, highlight, and share functionality"
+    ],
+    "technologies": ["Figma", "React Native", "GSAP", "Lottie", "TypeScript"],
+    "challenge": "Recreating the premium feel of a print magazine in a digital format while ensuring the experience was smooth on both high-end and mid-range devices.",
+    "solution": "We developed a custom layout engine that dynamically adjusted content flow based on screen size, used Lottie for micro-animations, and implemented progressive image loading for visually rich pages.",
+    "results": {
+      "performance": "60fps Scroll",
+      "loadTime": "< 1s Per Page",
+      "userSatisfaction": "4.9/5 Rating"
+    }
+  },
+  {
+    "id": "crypto-app-development",
+    "title": "Crypto App Development",
+    "category": "Full-Stack",
+    "image": "/images/ecommerce.png",
+    "tagline": "Real-time crypto tracking and portfolio management",
+    "description": "Built a comprehensive cryptocurrency tracking and portfolio management application with real-time price feeds, interactive charts, portfolio analytics, and secure wallet integration. The app processes thousands of data points per second while maintaining a responsive interface.",
+    "client": "Digital Investments Ltd.",
+    "duration": "12 Weeks",
+    "year": "2025",
+    "liveUrl": "#",
+    "highlights": [
+      "Real-time price tracking with WebSocket feeds",
+      "Interactive candlestick and line charts with zoom",
+      "Portfolio performance analytics and P&L tracking",
+      "Two-factor authentication and encrypted storage"
+    ],
+    "technologies": ["Next.js", "Node.js", "PostgreSQL", "Redis", "Chart.js"],
+    "challenge": "Processing high-frequency real-time data feeds while keeping the UI responsive, and ensuring rock-solid security for financial data.",
+    "solution": "We implemented a WebSocket gateway with Redis pub/sub for efficient data distribution, Web Workers for off-thread chart calculations, and a multi-layered security architecture with encryption at rest and in transit.",
+    "results": {
+      "performance": "< 50ms Data Latency",
+      "loadTime": "< 1.3s",
+      "userSatisfaction": "2K+ Active Users"
+    }
+  }
+]
