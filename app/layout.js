@@ -4,6 +4,7 @@ import TopLoader from "@/components/TopLoader";
 import { SITE_URL } from "@/lib/constants";
 import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
+import CookieConsent from "react-cookie-consent"; // <-- Import here
 import "./globals.css";
 
 const geistSans = Geist({
@@ -169,7 +170,31 @@ export default function RootLayout({ children }) {
           <TopLoader />
           <Analytics />
         </Suspense>
+
         {children}
+
+        {/* GDPR Cookie Consent Banner */}
+        <CookieConsent
+          location="bottom"
+          buttonText="Accept"
+          declineButtonText="Decline"
+          enableDeclineButton
+          cookieName="aleemtalha-analytics-consent"
+          style={{ background: "#000", color: "#fff", textAlign: "center" }}
+          buttonStyle={{ color: "#000", background: "#FDF94B", fontWeight: "bold" }}
+          onAccept={() => {
+            if (typeof window.gtag !== "undefined") {
+              window.gtag("consent", "update", { analytics_storage: "granted" });
+            }
+          }}
+          onDecline={() => {
+            if (typeof window.gtag !== "undefined") {
+              window.gtag("consent", "update", { analytics_storage: "denied" });
+            }
+          }}
+        >
+          This website uses cookies to enhance your experience and track analytics.
+        </CookieConsent>
       </body>
     </html>
   );
