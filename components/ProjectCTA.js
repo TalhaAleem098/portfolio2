@@ -1,16 +1,47 @@
 "use client";
 
 import Link from "next/link";
+import { useRef, useEffect } from "react";
 import { HiArrowUpRight } from "react-icons/hi2";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const HIDE = { opacity: 0, transform: "translateY(30px)" };
 
 export default function ProjectCTA() {
+  const sectionRef = useRef(null);
+  const headingRef = useRef(null);
+  const leftRef = useRef(null);
+  const rightRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+        defaults: { ease: "power2.out" },
+      });
+
+      tl.to(headingRef.current, { opacity: 1, y: 0, duration: 0.5 })
+        .to(leftRef.current, { opacity: 1, y: 0, duration: 0.5 }, "-=0.2")
+        .to(rightRef.current, { opacity: 1, y: 0, duration: 0.5 }, "-=0.25");
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div className="bg-white mx-1 lg:mx-5">
+    <div ref={sectionRef} className="bg-white mx-1 lg:mx-5">
       <div className="min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh] flex items-center">
         <div className="w-full mx-auto px-3 md:px-6 lg:px-12 xl:px-16 py-10 md:py-16 lg:py-24">
 
           {/* Main Heading */}
-          <h2 className="text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-black tracking-tight leading-[1.05] uppercase">
+          <h2 ref={headingRef} style={HIDE} className="text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-black tracking-tight leading-[1.05] uppercase">
             Have a Project?
           </h2>
 
@@ -18,7 +49,7 @@ export default function ProjectCTA() {
           <div className="mt-6 md:mt-8 lg:mt-14 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6 md:gap-8 lg:gap-10">
 
             {/* Left Side - Button + Paragraph */}
-            <div className="max-w-xl">
+            <div ref={leftRef} style={HIDE} className="max-w-xl">
               <Link
                 href="/contact"
                 className="inline-flex items-center gap-2 md:gap-3 px-6 md:px-8 lg:px-10 py-3 md:py-4 lg:py-5 bg-black text-white font-black text-xs md:text-sm uppercase tracking-widest rounded-full hover:bg-yellow-200 hover:text-black transition-all duration-300"
@@ -35,7 +66,7 @@ export default function ProjectCTA() {
             </div>
 
             {/* Right Side - Large Text */}
-            <div>
+            <div ref={rightRef} style={HIDE}>
               <h3 className="text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-black tracking-tight leading-[1.05] uppercase">
                 Let's Talk
               </h3>

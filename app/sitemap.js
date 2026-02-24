@@ -31,6 +31,12 @@ export default function sitemap() {
       changeFrequency: "monthly",
       priority: 0.9,
     },
+    {
+      url: `${SITE_URL}/contact`,
+      lastModified: new Date().toISOString(),
+      changeFrequency: "yearly",
+      priority: 0.7,
+    },
     ...services,
     ...works,
   ];

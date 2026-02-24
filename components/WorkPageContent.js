@@ -2,12 +2,74 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useRef, useEffect } from "react";
 import { HiArrowUpRight } from "react-icons/hi2";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const HIDE = { opacity: 0, transform: "translateY(30px)" };
 
 export default function WorkPageContent({ project, prevProject, nextProject }) {
+  const pageRef = useRef(null);
+  const heroTextRef = useRef(null);
+  const heroImgRef = useRef(null);
+  const infoRef = useRef(null);
+  const overviewRef = useRef(null);
+  const highlightsRef = useRef(null);
+  const techHeadRef = useRef(null);
+  const techGridRef = useRef(null);
+  const ctaRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Hero text
+      const heroTl = gsap.timeline({
+        scrollTrigger: { trigger: heroTextRef.current, start: "top 85%", toggleActions: "play none none none" },
+        defaults: { ease: "power2.out" },
+      });
+      heroTl
+        .to(heroTextRef.current, { opacity: 1, y: 0, duration: 0.5 })
+        .to(heroImgRef.current, { opacity: 1, y: 0, duration: 0.55 }, "-=0.2");
+
+      // Info strip
+      gsap.to(infoRef.current, {
+        opacity: 1, y: 0, duration: 0.6, ease: "power2.out",
+        scrollTrigger: { trigger: infoRef.current, start: "top 85%", toggleActions: "play none none none" },
+      });
+
+      // Overview + Highlights
+      const descTl = gsap.timeline({
+        scrollTrigger: { trigger: overviewRef.current, start: "top 85%", toggleActions: "play none none none" },
+        defaults: { ease: "power2.out" },
+      });
+      descTl
+        .to(overviewRef.current, { opacity: 1, y: 0, duration: 0.5 })
+        .to(highlightsRef.current, { opacity: 1, y: 0, duration: 0.5 }, "-=0.25");
+
+      // Tech
+      const techTl = gsap.timeline({
+        scrollTrigger: { trigger: techHeadRef.current, start: "top 85%", toggleActions: "play none none none" },
+        defaults: { ease: "power2.out" },
+      });
+      techTl
+        .to(techHeadRef.current, { opacity: 1, y: 0, duration: 0.5 })
+        .to(techGridRef.current, { opacity: 1, y: 0, duration: 0.6 }, "-=0.2");
+
+      // CTA
+      gsap.to(ctaRef.current, {
+        opacity: 1, y: 0, duration: 0.6, ease: "power2.out",
+        scrollTrigger: { trigger: ctaRef.current, start: "top 85%", toggleActions: "play none none none" },
+      });
+    }, pageRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <div className="min-h-screen bg-[#f5f5f5]">
+    <div ref={pageRef} className="min-h-screen bg-[#f5f5f5]">
       {/* ── Navbar ── */}
       <nav className="sticky top-0 z-50 bg-white border-b border-gray-200">
         <div className="flex items-center justify-between px-6 lg:px-10 xl:px-14 py-4 lg:py-5">
@@ -41,7 +103,7 @@ export default function WorkPageContent({ project, prevProject, nextProject }) {
       {/* ── Project Hero ── */}
       <section className="bg-white">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 xl:px-14 pt-16 lg:pt-24 pb-0">
-          <div className="mb-8">
+          <div ref={heroTextRef} style={HIDE} className="mb-8">
             <span className="inline-block px-4 py-1.5 bg-[#5477CC] text-white text-xs font-black uppercase tracking-widest rounded-full mb-6">
               {project.category}
             </span>
@@ -55,7 +117,7 @@ export default function WorkPageContent({ project, prevProject, nextProject }) {
         </div>
 
         <div className="max-w-7xl mx-auto px-6 lg:px-10 xl:px-14 pb-16 lg:pb-24">
-          <div className="relative overflow-hidden rounded-xl">
+          <div ref={heroImgRef} style={HIDE} className="relative overflow-hidden rounded-xl">
             <Image
               src={project.image}
               alt={`${project.title} — Project by Aleem Talha`}
@@ -70,7 +132,7 @@ export default function WorkPageContent({ project, prevProject, nextProject }) {
 
       {/* ── Project Info Strip ── */}
       <section className="bg-[#5477CC]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-10 xl:px-14 py-10 lg:py-14">
+        <div ref={infoRef} style={HIDE} className="max-w-7xl mx-auto px-6 lg:px-10 xl:px-14 py-10 lg:py-14">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
               { label: "Client", value: project.client },
@@ -96,7 +158,7 @@ export default function WorkPageContent({ project, prevProject, nextProject }) {
         <div className="max-w-7xl mx-auto px-6 lg:px-10 xl:px-14 py-16 lg:py-24">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
             {/* Left — About */}
-            <div>
+            <div ref={overviewRef} style={HIDE}>
               <p className="text-[#5477CC] text-xs font-black uppercase tracking-[0.3em] mb-3">
                 About The Project
               </p>
@@ -128,7 +190,7 @@ export default function WorkPageContent({ project, prevProject, nextProject }) {
             </div>
 
             {/* Right — Highlights + Results */}
-            <div>
+            <div ref={highlightsRef} style={HIDE}>
               <p className="text-[#5477CC] text-xs font-black uppercase tracking-[0.3em] mb-3">
                 Key Deliverables
               </p>
@@ -183,14 +245,16 @@ export default function WorkPageContent({ project, prevProject, nextProject }) {
       {/* ── Technologies ── */}
       <section className="bg-[#f5f5f5]">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 xl:px-14 py-16 lg:py-20">
+          <div ref={techHeadRef} style={HIDE}>
           <p className="text-[#5477CC] text-xs font-black uppercase tracking-[0.3em] mb-3">
             Built With
           </p>
           <h2 className="text-3xl lg:text-4xl font-black tracking-tight leading-[1.05] uppercase mb-10">
             Tech Stack
           </h2>
+          </div>
 
-          <div className="flex flex-wrap gap-4">
+          <div ref={techGridRef} style={HIDE} className="flex flex-wrap gap-4">
             {project.technologies.map((tech, idx) => (
               <span
                 key={idx}
@@ -271,7 +335,7 @@ export default function WorkPageContent({ project, prevProject, nextProject }) {
       {/* ── CTA ── */}
       <section className="bg-[#5477CC]">
         <div className="max-w-7xl mx-auto px-6 lg:px-10 xl:px-14 py-16 lg:py-24">
-          <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
+          <div ref={ctaRef} style={HIDE} className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-10">
             <div>
               <h2 className="text-4xl lg:text-6xl font-black text-white tracking-tight leading-[1.05] uppercase mb-6">
                 Have a Similar

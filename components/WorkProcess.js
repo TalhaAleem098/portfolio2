@@ -1,6 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import { useRef, useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const HIDE = { opacity: 0, transform: "translateY(30px)" };
 
 export default function WorkProcess() {
   const steps = [
@@ -32,17 +39,45 @@ export default function WorkProcess() {
     },
   ];
 
+  const sectionRef = useRef(null);
+  const headingRef = useRef(null);
+  const card1Ref = useRef(null);
+  const card2Ref = useRef(null);
+  const card3Ref = useRef(null);
+  const card4Ref = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+        defaults: { ease: "power2.out" },
+      });
+
+      tl.to(headingRef.current, { opacity: 1, y: 0, duration: 0.5 })
+        .to(card1Ref.current, { opacity: 1, y: 0, duration: 0.5 }, "-=0.2")
+        .to(card2Ref.current, { opacity: 1, y: 0, duration: 0.5 }, "-=0.3")
+        .to(card3Ref.current, { opacity: 1, y: 0, duration: 0.5 }, "-=0.3")
+        .to(card4Ref.current, { opacity: 1, y: 0, duration: 0.5 }, "-=0.3");
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <div className="px-1">
-      <div className="bg-white px-1 lg:mx-5">
+      <div ref={sectionRef} className="bg-white px-1 lg:mx-5">
         <div className="py-8 md:py-12 lg:py-16 px-3 md:px-6 lg:px-12 xl:px-16 pt-10 md:pt-14 lg:pt-20">
-          <h2 className="text-xl md:text-2xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-[1.05] uppercase mb-6 md:mb-10 lg:mb-16">
+          <h2 ref={headingRef} style={HIDE} className="text-xl md:text-2xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-[1.05] uppercase mb-6 md:mb-10 lg:mb-16">
             My Work Process
           </h2>
 
           <div className="flex flex-nowrap gap-4 md:gap-5 lg:gap-6 overflow-x-auto lg:overflow-visible snap-x snap-mandatory lg:snap-none scrollbar-hide pb-4 lg:pb-0">
             {/* Card 1 - Normal position */}
-            <div className="flex flex-col min-w-[60vw] md:min-w-[40vw] lg:min-w-0 lg:flex-1 snap-start">
+            <div ref={card1Ref} style={HIDE} className="flex flex-col min-w-[60vw] md:min-w-[40vw] lg:min-w-0 lg:flex-1 snap-start">
               <div className="relative group overflow-hidden cursor-pointer mb-2 md:mb-3 lg:mb-4">
                 <Image
                   src={steps[0].image}
@@ -69,7 +104,7 @@ export default function WorkProcess() {
             </div>
 
             {/* Card 2 - Shifted down */}
-            <div className="flex flex-col lg:mt-20 min-w-[60vw] md:min-w-[40vw] lg:min-w-0 lg:flex-1 snap-start">
+            <div ref={card2Ref} style={HIDE} className="flex flex-col lg:mt-20 min-w-[60vw] md:min-w-[40vw] lg:min-w-0 lg:flex-1 snap-start">
               <div className="relative group overflow-hidden cursor-pointer mb-2 md:mb-3 lg:mb-4">
                 <Image
                   src={steps[1].image}
@@ -96,7 +131,7 @@ export default function WorkProcess() {
             </div>
 
             {/* Card 3 - Normal position */}
-            <div className="flex flex-col min-w-[60vw] md:min-w-[40vw] lg:min-w-0 lg:flex-1 snap-start">
+            <div ref={card3Ref} style={HIDE} className="flex flex-col min-w-[60vw] md:min-w-[40vw] lg:min-w-0 lg:flex-1 snap-start">
               <div className="relative group overflow-hidden cursor-pointer mb-2 md:mb-3 lg:mb-4">
                 <Image
                   src={steps[2].image}
@@ -123,7 +158,7 @@ export default function WorkProcess() {
             </div>
 
             {/* Card 4 - Shifted down */}
-            <div className="flex flex-col lg:mt-20 min-w-[60vw] md:min-w-[40vw] lg:min-w-0 lg:flex-1 snap-start">
+            <div ref={card4Ref} style={HIDE} className="flex flex-col lg:mt-20 min-w-[60vw] md:min-w-[40vw] lg:min-w-0 lg:flex-1 snap-start">
               <div className="relative group overflow-hidden cursor-pointer mb-2 md:mb-3 lg:mb-4">
                 <Image
                   src={steps[3].image}

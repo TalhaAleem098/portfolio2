@@ -1,21 +1,63 @@
 "use client";
 
 import Link from "next/link";
+import { useRef, useEffect } from "react";
 import {
   FaGithub,
   FaInstagram,
   FaLinkedin,
   FaWhatsapp,
 } from "react-icons/fa";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const HIDE = { opacity: 0, transform: "translateY(30px)" };
 
 export default function Footer() {
+  const sectionRef = useRef(null);
+  const gridRef = useRef(null);
+  const copyrightRef = useRef(null);
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.to(gridRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 85%",
+          toggleActions: "play none none none",
+        },
+      });
+
+      gsap.to(copyrightRef.current, {
+        opacity: 1,
+        y: 0,
+        duration: 0.5,
+        delay: 0.2,
+        ease: "power2.out",
+        scrollTrigger: {
+          trigger: copyrightRef.current,
+          start: "top 95%",
+          toggleActions: "play none none none",
+        },
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
     <div className="bg-white mx-1 lg:mx-5">
       <div className="p-1 md:p-2 lg:p-3">
-        <footer className="bg-[#5477CC] py-8 md:py-10 px-3 md:px-6 lg:px-12 xl:px-16 flex flex-col justify-between">
+        <footer ref={sectionRef} className="bg-[#5477CC] py-8 md:py-10 px-3 md:px-6 lg:px-12 xl:px-16 flex flex-col justify-between">
           <div className="py-8 md:py-12 lg:py-16">
             {/* Main Footer Content */}
-            <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10 xl:gap-12 mb-8 md:mb-10 lg:mb-12 pb-8 md:pb-10 lg:pb-12 border-b border-white/30">
+            <div ref={gridRef} style={HIDE} className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10 xl:gap-12 mb-8 md:mb-10 lg:mb-12 pb-8 md:pb-10 lg:pb-12 border-b border-white/30">
               {/* Email Section */}
               <div>
                 <h3 className="text-[10px] md:text-xs font-black uppercase tracking-widest text-white mb-2 md:mb-4">
@@ -143,7 +185,7 @@ export default function Footer() {
                 <p className="text-[10px] md:text-xs font-medium text-white leading-relaxed">
                   <a
                     href="mailto:aleemtalha098@gmail.com"
-                    className="hover:text-yellow-200 transition"
+                    className="hover:text-yellow-200 transition truncate"
                   >
                     aleemtalha098@gmail.com
                   </a>
@@ -152,7 +194,7 @@ export default function Footer() {
             </div>
 
             {/* Copyright */}
-            <div className="text-center">
+            <div ref={copyrightRef} style={HIDE} className="text-center">
               <p className="text-[10px] md:text-xs font-medium text-white uppercase tracking-wide">
                 {new Date().getFullYear()}&copy; ALEEM TALHA. ALL RIGHTS RESERVED
               </p>

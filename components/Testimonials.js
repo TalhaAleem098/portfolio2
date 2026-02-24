@@ -3,9 +3,18 @@
 import { useRef, useEffect, useState } from "react";
 import { FiArrowLeft, FiArrowRight } from "react-icons/fi";
 import { FaUser } from "react-icons/fa";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const HIDE = { opacity: 0, transform: "translateY(30px)" };
 
 export default function Testimonials() {
   const containerRef = useRef(null);
+  const sectionRef = useRef(null);
+  const headerRef = useRef(null);
+  const cardsRef = useRef(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [canScroll, setCanScroll] = useState({ prev: false, next: true });
   const [isDragging, setIsDragging] = useState(false);
@@ -147,10 +156,28 @@ export default function Testimonials() {
     });
   };
 
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: sectionRef.current,
+          start: "top 80%",
+          toggleActions: "play none none none",
+        },
+        defaults: { ease: "power2.out" },
+      });
+
+      tl.to(headerRef.current, { opacity: 1, y: 0, duration: 0.5 })
+        .to(cardsRef.current, { opacity: 1, y: 0, duration: 0.6 }, "-=0.2");
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section id="testimonials" className="bg-white mx-1 md:mx-1 lg:mx-6 py-8 md:py-12 lg:py-16">
+    <section ref={sectionRef} id="testimonials" className="bg-white mx-1 md:mx-1 lg:mx-6 py-8 md:py-12 lg:py-16">
       <div className="px-3 md:px-6 lg:px-12 xl:px-16 pt-8 md:pt-12 lg:pt-20">
-        <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 md:mb-8 lg:mb-12">
+        <div ref={headerRef} style={HIDE} className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 md:mb-8 lg:mb-12">
           <h2 className="text-xl md:text-2xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-[1.05] uppercase">
             Testimonials
           </h2>
@@ -182,6 +209,10 @@ export default function Testimonials() {
           </div>
         </div>
 
+        <div
+          ref={cardsRef}
+          style={HIDE}
+        >
         <div
           ref={containerRef}
           onScroll={handleScrollEvent}
@@ -218,6 +249,7 @@ export default function Testimonials() {
               </div>
             </div>
           ))}
+        </div>
         </div>
       </div>
     </section>
