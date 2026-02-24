@@ -4,7 +4,7 @@ import TopLoader from "@/components/TopLoader";
 import { SITE_URL } from "@/lib/constants";
 import { Analytics } from "@vercel/analytics/next";
 import Script from "next/script";
-import CookieConsent from "react-cookie-consent"; // <-- Import here
+import ConsentBanner from "@/components/ConsentBanner";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -145,25 +145,58 @@ export default function RootLayout({ children }) {
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
 
-        {/* Google Analytics */}
+        {/* Google Consent Mode - Must load BEFORE Google Analytics */}
         <Script
-          strategy="afterInteractive"
-          src="https://www.googletagmanager.com/gtag/js?id=G-112J1L8ZQP"
-        />
-        <Script
-          id="google-analytics"
-          strategy="afterInteractive"
+          id="gtag-consent"
+          strategy="beforeInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              gtag('config', 'G-112J1L8ZQP', {
-                page_path: window.location.pathname,
+              
+              // Set default consent based on user region and stored preferences
+              const analyticsConsent = localStorage.getItem('analytics-consent') || 'denied';
+              const adConsent = localStorage.getItem('ad-consent') || 'denied';
+              
+              gtag('consent', 'default', {
+                'ad_storage': adConsent,
+                'ad_user_data': adConsent,
+                'ad_personalization': adConsent,
+                'analytics_storage': analyticsConsent,
+                'wait_for_update': 500
               });
+              
+              gtag('set', {'anonymize_ip': true});
             `,
           }}
         />
+
+        {/* Google Analytics - Only loads if GA ID is configured */}
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <Script
+              strategy="afterInteractive"
+              src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`}
+            />
+            <Script
+              id="google-analytics-config"
+              strategy="afterInteractive"
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}', {
+                    page_path: window.location.pathname,
+                    anonymize_ip: true,
+                    allow_google_signals: false,
+                    allow_ad_personalization_signals: false
+                  });
+                `,
+              }}
+            />
+          </>
+        )}
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Suspense fallback={null}>
@@ -173,28 +206,8 @@ export default function RootLayout({ children }) {
 
         {children}
 
-        {/* GDPR Cookie Consent Banner */}
-        <CookieConsent
-          location="bottom"
-          buttonText="Accept"
-          declineButtonText="Decline"
-          enableDeclineButton
-          cookieName="aleemtalha-analytics-consent"
-          style={{ background: "#000", color: "#fff", textAlign: "center" }}
-          buttonStyle={{ color: "#000", background: "#FDF94B", fontWeight: "bold" }}
-          onAccept={() => {
-            if (typeof window.gtag !== "undefined") {
-              window.gtag("consent", "update", { analytics_storage: "granted" });
-            }
-          }}
-          onDecline={() => {
-            if (typeof window.gtag !== "undefined") {
-              window.gtag("consent", "update", { analytics_storage: "denied" });
-            }
-          }}
-        >
-          This website uses cookies to enhance your experience and track analytics.
-        </CookieConsent>
+        {/* Consent Banner Component */}
+        <ConsentBanner />
       </body>
     </html>
   );
