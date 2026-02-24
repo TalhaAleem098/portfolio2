@@ -154,15 +154,12 @@ export default function RootLayout({ children }) {
               window.dataLayer = window.dataLayer || [];
               function gtag(){dataLayer.push(arguments);}
               
-              // Set default consent based on user region and stored preferences
-              const analyticsConsent = localStorage.getItem('analytics-consent') || 'denied';
-              const adConsent = localStorage.getItem('ad-consent') || 'denied';
-              
+              // Set default consent to 'denied' until user makes a choice
               gtag('consent', 'default', {
-                'ad_storage': adConsent,
-                'ad_user_data': adConsent,
-                'ad_personalization': adConsent,
-                'analytics_storage': analyticsConsent,
+                'ad_storage': 'denied',
+                'ad_user_data': 'denied',
+                'ad_personalization': 'denied',
+                'analytics_storage': 'denied',
                 'wait_for_update': 500
               });
               

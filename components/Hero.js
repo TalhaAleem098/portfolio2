@@ -56,6 +56,13 @@ export default function Hero() {
   const mobIconsRef    = useRef(null);
   const mobImgRef      = useRef(null);
 
+  // Tablet-specific refs (needed because tablet & desktop render separately)
+  const tabLeftHeadRef  = useRef(null);
+  const tabLeftDescRef  = useRef(null);
+  const tabImgRef       = useRef(null);
+  const tabRightTopRef  = useRef(null);
+  const tabRightBotRef  = useRef(null);
+
   const handleNavClick = (item) => {
     setActive(item);
     setMobileMenuOpen(false);
@@ -110,7 +117,9 @@ export default function Hero() {
   // as layout — no flash possible. scope: heroRef for automatic cleanup.
   useGSAP(
     () => {
-      const mobile = window.innerWidth < 768;
+      const w = window.innerWidth;
+      const mobile = w < 768;
+      const tablet = w >= 768 && w < 1024;
 
       if (mobile) {
         // Mobile: icons → image
@@ -121,8 +130,26 @@ export default function Hero() {
           .to(mobImgRef.current, {
             opacity: 1, y: 0, duration: 0.55,
           }, "-=0.1");
+      } else if (tablet) {
+        // Tablet: animate tablet-specific refs
+        gsap.timeline({ defaults: { ease: "power2.out" } })
+          .to(tabLeftHeadRef.current, {
+            opacity: 1, y: 0, duration: 0.45, delay: 0.15,
+          })
+          .to(tabLeftDescRef.current, {
+            opacity: 1, y: 0, duration: 0.4,
+          }, "-=0.2")
+          .to(tabImgRef.current, {
+            opacity: 1, y: 0, duration: 0.5,
+          }, "-=0.2")
+          .to(tabRightTopRef.current, {
+            opacity: 1, y: 0, duration: 0.4,
+          }, "-=0.25")
+          .to(tabRightBotRef.current, {
+            opacity: 1, y: 0, duration: 0.4,
+          }, "-=0.2");
       } else {
-        // Tablet / Desktop: left heading → left desc → image → right top → right bottom
+        // Desktop: animate desktop-specific refs
         gsap.timeline({ defaults: { ease: "power2.out" } })
           .to(leftHeadRef.current, {
             opacity: 1, y: 0, duration: 0.45, delay: 0.15,
@@ -153,7 +180,7 @@ export default function Hero() {
     <div
       id="hero-section"
       ref={heroRef}
-      className="bg-white mb-0 lg:border-6 xl:border-8 border-black rounded-lg lg:rounded-[30px] box-border"
+      className="bg-white mb-0 border-2 md:border-3 lg:border-6 xl:border-8 border-black rounded-lg lg:rounded-[30px] box-border"
     >
       <div className="xl:p-6 p-2">
         <div className="bg-[#5477CC] min-h-[90vh] md:min-h-0 h-full flex flex-col md:block">
@@ -165,7 +192,7 @@ export default function Hero() {
           <div className="flex md:hidden flex-col flex-1 items-center justify-end relative overflow-hidden">
             <span
               aria-hidden="true"
-              className="pointer-events-none select-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-black text-white/50 uppercase leading-none z-0 text-5xl"
+              className="pointer-events-none select-none absolute left-1/2 top-1/3 -translate-x-1/2 -translate-y-1/2 whitespace-nowrap font-black text-white/50 uppercase leading-none z-0 text-4xl"
             >
               Aleem Talha
             </span>
@@ -197,17 +224,17 @@ export default function Hero() {
           </div>
 
           {/* ===== TABLET (768px – 1023px) ===== */}
-          <div className="hidden md:grid lg:hidden grid-cols-12 gap-0 px-6 pt-8 hero-tablet-height">
+          <div className="hidden md:grid lg:hidden grid-cols-12 gap-0 px-6 pt-8 hero-tablet-height ">
             <div className="col-span-4 flex h-full items-center">
               <div className="flex flex-col justify-between h-[65%] items-center">
-                <div ref={leftHeadRef} style={HIDE}>
+                <div ref={tabLeftHeadRef} style={HIDE}>
                   <h1 className="text-3xl md:text-4xl font-black text-white leading-tight tracking-tighter">
                     UI UX
                     <br />
                     DESIGNER
                   </h1>
                 </div>
-                <div ref={leftDescRef} style={HIDE} className="max-w-50">
+                <div ref={tabLeftDescRef} style={HIDE} className="max-w-48">
                   <p className="text-white text-[11px] leading-relaxed font-medium">
                     I DESIGN INTUITIVE INTERFACES AND DEVELOP USER-CENTRIC SOLUTIONS,
                     BLENDING CREATIVITY AND TECHNICAL EXPERTISE TO CRAFT SEAMLESS
@@ -219,7 +246,7 @@ export default function Hero() {
 
             <div className="col-span-4 flex items-end justify-center">
               <div
-                ref={imgRef}
+                ref={tabImgRef}
                 style={HIDE}
                 className="relative w-full h-full flex items-end justify-center"
               >
@@ -237,14 +264,14 @@ export default function Hero() {
 
             <div className="col-span-4 flex h-full items-center">
               <div className="flex flex-col justify-between h-[75%]">
-                <div ref={rightTopRef} style={HIDE} className="max-w-55">
+                <div ref={tabRightTopRef} style={HIDE} className="max-w-56">
                   <p className="text-white font-bold text-[11px] mb-3 tracking-widest">FOLLOW ME</p>
                   <SocialIcons size={14} />
                   <p className="text-white text-[11px] leading-relaxed font-medium mt-3">
                     2.5+ YEARS OF EXPERIENCE DELIVERING PIXEL-PERFECT DIGITAL SOLUTIONS
                   </p>
                 </div>
-                <div ref={rightBotRef} style={HIDE}>
+                <div ref={tabRightBotRef} style={HIDE}>
                   <h2 className="text-3xl md:text-4xl font-black text-white leading-tight tracking-tighter">
                     FULL
                     <br />

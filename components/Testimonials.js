@@ -175,7 +175,7 @@ export default function Testimonials() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="testimonials" className="bg-white mx-1 md:mx-1 lg:mx-6 py-8 md:py-12 lg:py-16">
+    <section ref={sectionRef} id="testimonials" className="bg-white mx-1 md:mx-1 lg:mx-5 py-8 md:py-12 lg:py-16">
       <div className="px-3 md:px-6 lg:px-12 xl:px-16 pt-8 md:pt-12 lg:pt-20">
         <div ref={headerRef} style={HIDE} className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6 md:mb-8 lg:mb-12">
           <h2 className="text-xl md:text-2xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-[1.05] uppercase">

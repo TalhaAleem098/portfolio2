@@ -11,7 +11,7 @@ import Footer from '@/components/Footer';
 
 export default function HomeContent() {
   return (
-    <div className="px-1.5 md:px-3 lg:px-4 xl:px-6 pt-1.5 md:pt-3 lg:pt-4 xl:pt-6 pb-0 min-h-screen ">
+    <div className="px-1.5 md:px-3 lg:px-4 xl:px-6 pt-1.5 md:pt-3 lg:pt-4 xl:pt-6 pb-0 min-h-screen max-w-full overflow-x-hidden">
       <Hero />
       <Services />
       <RecentWorks />

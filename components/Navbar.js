@@ -4,7 +4,7 @@
 import Link from "next/link";
 import { HiArrowUpRight } from "react-icons/hi2";
 import { FiMenu, FiX } from "react-icons/fi";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useCallback } from "react";
 import gsap from "gsap";
 
 export default function Navbar({
@@ -20,9 +20,43 @@ export default function Navbar({
 
   const fixedNavRef = useRef(null);
   const heroNavRef = useRef(null);
+  const sidebarRef = useRef(null);
+  const overlayRef = useRef(null);
   const lastScrollY = useRef(0);
   const isNavVisible = useRef(false);
   const ticking = useRef(false);
+
+  // Sidebar open/close animation
+  useEffect(() => {
+    const sidebar = sidebarRef.current;
+    const overlay = overlayRef.current;
+    if (!sidebar || !overlay) return;
+
+    if (mobileMenuOpen) {
+      // Open
+      gsap.set(sidebar, { display: "flex" });
+      gsap.set(overlay, { display: "block" });
+      gsap.to(overlay, { opacity: 1, duration: 0.25, ease: "power2.out" });
+      gsap.to(sidebar, { x: 0, duration: 0.3, ease: "power3.out" });
+    } else {
+      // Close
+      gsap.to(sidebar, { x: "100%", duration: 0.25, ease: "power2.in" });
+      gsap.to(overlay, {
+        opacity: 0,
+        duration: 0.2,
+        ease: "power2.in",
+        onComplete: () => {
+          gsap.set(sidebar, { display: "none" });
+          gsap.set(overlay, { display: "none" });
+        },
+      });
+    }
+  }, [mobileMenuOpen]);
+
+  const closeSidebar = useCallback(
+    () => setMobileMenuOpen(false),
+    [setMobileMenuOpen],
+  );
 
   useEffect(() => {
     if (isFixed || !heroNavRef.current) return;
@@ -46,7 +80,7 @@ export default function Navbar({
       gsap.fromTo(
         fixedNavRef.current,
         { y: -80 },
-        { y: 0, duration: 0.4, ease: "power2.out" }
+        { y: 0, duration: 0.4, ease: "power2.out" },
       );
     }
   }, [showFixedNav, isFixed]);
@@ -88,8 +122,10 @@ export default function Navbar({
   }, [isFixed]);
 
   const navLinkClass = (item, isMobile = false) => {
-    const base = "uppercase font-bold cursor-pointer tracking-widest transition-colors duration-200";
-    const color = active === item ? "text-[#FDF94B]" : "text-white hover:text-yellow-200";
+    const base =
+      "uppercase font-bold cursor-pointer tracking-widest transition-colors duration-200";
+    const color =
+      active === item ? "text-[#FDF94B]" : "text-white hover:text-yellow-200";
 
     if (isMobile) return `${base} text-sm ${color}`;
     if (isFixed) return `${base} text-xs lg:text-xs xl:text-sm ${color}`;
@@ -111,37 +147,72 @@ export default function Navbar({
     </Link>
   );
 
-  const MobileMenu = () => (
-    <div className="lg:hidden fixed inset-0 top-16 bg-[#5477CC] z-40 pt-2 px-1 overflow-y-auto border-r-2 border-black">
-      <div className="flex flex-col gap-4 pb-8 p-2 md:p-3">
-        {navItems.map((item) => {
-          const isSection = ["WORKS", "SERVICES", "TESTIMONIAL"].includes(item);
-          const sharedClass = `text-left pl-2 py-2 border-l-4 transition-all ${
-            active === item
-              ? "border-[#FDF94B] text-[#FDF94B]"
-              : "border-transparent text-white hover:text-yellow-200 hover:border-yellow-200"
-          } ${navLinkClass(item, true)}`;
+  const MobileSidebar = () => (
+    <>
+      {/* Backdrop overlay */}
+      <div
+        ref={overlayRef}
+        onClick={closeSidebar}
+        className="lg:hidden fixed inset-0 bg-black/50 z-40"
+        style={{ display: "none", opacity: 0 }}
+      />
 
-          return isSection ? (
-            <button key={item} onClick={() => handleNavClick(item)} className={sharedClass}>
-              {item}
-            </button>
-          ) : (
-            <Link
-              key={item}
-              href={getNavLink(item)}
-              onClick={() => setMobileMenuOpen(false)}
-              className={sharedClass}
-            >
-              {item}
-            </Link>
-          );
-        })}
-        <div className="pt-4 mt-4 border-t border-white/30">
-          <HireButton className="w-full justify-center text-xs px-3 py-2 md:px-4 md:py-3" />
+      {/* Sidebar */}
+      <div
+        ref={sidebarRef}
+        className="lg:hidden fixed top-0 right-0 h-full w-[72%] max-w-xs bg-[#5477CC] z-50 flex flex-col shadow-2xl"
+        style={{ display: "none", transform: "translateX(100%)" }}
+      >
+        {/* Close button */}
+        <div className="flex items-center justify-end p-4">
+          <button
+            onClick={closeSidebar}
+            className="text-white cursor-pointer hover:text-yellow-200 transition-colors"
+            aria-label="Close menu"
+          >
+            <FiX size={24} />
+          </button>
+        </div>
+
+        {/* Nav links */}
+        <div className="flex flex-col gap-2 px-5 flex-1">
+          {navItems.map((item) => {
+            const isSection = ["WORKS", "SERVICES", "TESTIMONIAL"].includes(
+              item,
+            );
+            const sharedClass = `text-left pl-3 py-2.5 border-l-4 transition-all ${
+              active === item
+                ? "border-[#FDF94B] text-[#FDF94B]"
+                : "border-transparent text-white hover:text-yellow-200 hover:border-yellow-200"
+            } ${navLinkClass(item, true)}`;
+
+            return isSection ? (
+              <button
+                key={item}
+                onClick={() => handleNavClick(item)}
+                className={sharedClass}
+              >
+                {item}
+              </button>
+            ) : (
+              <Link
+                key={item}
+                href={getNavLink(item)}
+                onClick={closeSidebar}
+                className={sharedClass}
+              >
+                {item}
+              </Link>
+            );
+          })}
+        </div>
+
+        {/* Hire button at bottom */}
+        <div className="px-5 pb-8 pt-4 border-t border-white/20 mt-auto">
+          <HireButton className="w-full justify-center text-xs px-3 py-2.5" />
         </div>
       </div>
-    </div>
+    </>
   );
 
   const NavLinks = () => (
@@ -149,7 +220,11 @@ export default function Navbar({
       {navItems.map((item) => {
         const isSection = ["WORKS", "SERVICES", "TESTIMONIAL"].includes(item);
         return isSection ? (
-          <button key={item} onClick={() => handleNavClick(item)} className={navLinkClass(item)}>
+          <button
+            key={item}
+            onClick={() => handleNavClick(item)}
+            className={navLinkClass(item)}
+          >
             {item}
           </button>
         ) : (
@@ -173,7 +248,9 @@ export default function Navbar({
     >
       <span className={brandClass}>
         ALEEM{"."}
-        <span className={`font-extrabold ${isFixed ? "text-xs lg:text-base xl:text-xl" : "text-xs lg:text-lg xl:text-xl"}`}>
+        <span
+          className={`font-extrabold ${isFixed ? "text-xs lg:text-base xl:text-xl" : "text-xs lg:text-lg xl:text-xl"}`}
+        >
           Talha
         </span>
       </span>
@@ -186,13 +263,17 @@ export default function Navbar({
       className="lg:hidden cursor-pointer text-white text-2xl z-50 shrink-0"
       aria-label="Toggle menu"
     >
-      {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
+      {/* {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />} */}
+      <FiMenu size={24} />
     </button>
   );
 
   if (showFixedNav && isFixed) {
     return (
-      <div ref={fixedNavRef} style={{ transform: "translateY(-80px)", willChange: "transform" }}>
+      <div
+        ref={fixedNavRef}
+        style={{ transform: "translateY(-80px)", willChange: "transform" }}
+      >
         <nav className="fixed top-0 left-0 right-0 w-full bg-[#5477CC] border-b border-black z-50 shadow-lg">
           <div className="flex items-center justify-between px-4 md:p-3 lg:p-4 xl:p-6">
             <MenuToggle />
@@ -203,7 +284,7 @@ export default function Navbar({
             </div>
           </div>
         </nav>
-        {mobileMenuOpen && <MobileMenu />}
+        <MobileSidebar />
       </div>
     );
   }
@@ -223,7 +304,7 @@ export default function Navbar({
             <HireButton className="text-xs px-4 lg:px-6 xl:px-8 lg:py-2 xl:py-3" />
           </div>
         </nav>
-        {mobileMenuOpen && <MobileMenu />}
+        <MobileSidebar />
       </>
     );
   }

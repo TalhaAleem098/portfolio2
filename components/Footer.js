@@ -171,7 +171,7 @@ export default function Footer() {
               </div>
 
               {/* Contact Section */}
-              <div>
+              <div className="min-w-0">
                 <h3 className="text-[10px] md:text-xs font-black uppercase tracking-widest text-white mb-2 md:mb-4">
                   Get in Touch
                 </h3>
@@ -183,10 +183,10 @@ export default function Footer() {
                     +92 327 044 5135
                   </a>
                 </p>
-                <p className="text-[10px] md:text-xs font-medium text-white leading-relaxed">
+                <p className="text-[10px] md:text-xs font-medium text-white leading-relaxed wrap-break-word overflow-hidden">
                   <a
                     href={`mailto:${CONTACT_EMAIL}`}
-                    className="hover:text-yellow-200 transition truncate"
+                    className="hover:text-yellow-200 transition"
                   >
                     {CONTACT_EMAIL}
                   </a>
