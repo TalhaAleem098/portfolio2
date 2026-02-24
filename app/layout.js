@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import TopLoader from "@/components/TopLoader";
 import { SITE_URL } from "@/lib/constants";
 import { Analytics } from "@vercel/analytics/next";
+import Script from "next/script";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -40,13 +41,6 @@ export const metadata = {
     "Tailwind CSS",
   ],
   authors: [{ name: "Aleem Talha", url: SITE_URL }],
-  creator: "Aleem Talha",
-  publisher: "Aleem Talha",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -55,6 +49,14 @@ export const metadata = {
     title: "Aleem Talha — UI/UX Designer & Full Stack Developer",
     description:
       "Crafting seamless digital experiences through intuitive design and robust development. View my portfolio of 15+ projects.",
+    images: [
+      {
+        url: `${SITE_URL}/images/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "Aleem Talha — Portfolio OG Image",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
@@ -62,6 +64,7 @@ export const metadata = {
     description:
       "Crafting seamless digital experiences through intuitive design and robust development.",
     creator: "@aleemtalha",
+    images: [`${SITE_URL}/images/og-image.png`],
   },
   robots: {
     index: true,
@@ -81,13 +84,6 @@ export const metadata = {
     canonical: SITE_URL,
   },
   category: "technology",
-};
-
-export const viewport = {
-  themeColor: "#5477CC",
-  width: "device-width",
-  initialScale: 1,
-  maximumScale: 5,
 };
 
 export default function RootLayout({ children }) {
@@ -131,41 +127,44 @@ export default function RootLayout({ children }) {
     url: SITE_URL,
     description:
       "Personal portfolio of Aleem Talha — UI/UX Designer & Full Stack Developer",
-    author: {
-      "@type": "Person",
-      name: "Aleem Talha",
-    },
+    author: { "@type": "Person", name: "Aleem Talha" },
   };
 
   return (
     <html lang="en">
       <head>
-        <link
-          rel="icon"
-          type="image/png"
-          href="/favicon-96x96.png"
-          sizes="96x96"
-        />
+        {/* Favicon */}
+        <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
-        />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
         <meta name="apple-mobile-web-app-title" content="Aleem Dev" />
         <link rel="manifest" href="/site.webmanifest" />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
+
+        {/* JSON-LD structured data */}
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+
+        {/* Google Analytics */}
+        <Script
+          strategy="afterInteractive"
+          src="https://www.googletagmanager.com/gtag/js?id=G-112J1L8ZQP"
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
+        <Script
+          id="google-analytics"
+          strategy="afterInteractive"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', 'G-112J1L8ZQP', {
+                page_path: window.location.pathname,
+              });
+            `,
+          }}
         />
       </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Suspense fallback={null}>
           <TopLoader />
           <Analytics />

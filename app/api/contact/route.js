@@ -22,21 +22,35 @@ export async function POST(request) {
       );
     }
 
+    // Check if SMTP credentials are configured
+    if (!process.env.SMTP_EMAIL || !process.env.SMTP_PASSWORD) {
+      console.error("❌ SMTP credentials missing on server:");
+      console.error("   SMTP_EMAIL:", process.env.SMTP_EMAIL ? "✓ Set" : "✗ Missing");
+      console.error("   SMTP_PASSWORD:", process.env.SMTP_PASSWORD ? "✓ Set" : "✗ Missing");
+      return NextResponse.json(
+        { 
+          error: "Email service is not configured. Please check with the site owner.",
+          details: process.env.NODE_ENV === "development" ? "SMTP credentials missing" : undefined
+        },
+        { status: 500 }
+      );
+    }
+
     // Create transporter using environment variables
     // For Gmail: enable "App Passwords" in Google Account settings
-    // Set SMTP_EMAIL and SMTP_PASSWORD in .env.local
+    // Set SMTP_EMAIL and SMTP_PASSWORD in .env.local or Vercel environment variables
     const transporter = nodemailer.createTransport({
       service: "gmail",
       auth: {
-        user: process.env.SMTP_EMAIL || "aleemtalha098@gmail.com",
+        user: process.env.SMTP_EMAIL,
         pass: process.env.SMTP_PASSWORD,
       },
     });
 
     // Email to you (site owner) — notification of new contact
     const ownerMailOptions = {
-      from: `"Portfolio Contact" <${process.env.SMTP_EMAIL || "aleemtalha098@gmail.com"}>`,
-      to: "aleemtalha098@gmail.com",
+      from: `"Portfolio Contact" <${process.env.SMTP_EMAIL}>`,
+      to: process.env.SMTP_EMAIL,
       replyTo: email,
       subject: `New Contact: ${subject}`,
       html: `
@@ -70,7 +84,7 @@ export async function POST(request) {
 
     // Confirmation email to the sender
     const senderMailOptions = {
-      from: `"Aleem Talha" <${process.env.SMTP_EMAIL || "aleemtalha098@gmail.com"}>`,
+      from: `"Aleem Talha" <${process.env.SMTP_EMAIL}>`,
       to: email,
       subject: `Thanks for reaching out, ${name}!`,
       html: `
@@ -92,7 +106,7 @@ export async function POST(request) {
             <hr style="border: none; border-top: 1px solid #e0e0e0; margin: 20px 0;" />
             <p style="color: #999; font-size: 12px; margin: 0;">
               — Aleem Talha | UI/UX Designer & Full Stack Developer<br />
-              <a href="https://aleemtalha.vercel.app" style="color: #5477CC;">aleemtalha.vercel.app</a>
+              <a href="https://aleemtalha.codes" style="color: #5477CC;">aleemtalha.codes</a>
             </p>
           </div>
         </div>
@@ -108,9 +122,25 @@ export async function POST(request) {
       { status: 200 }
     );
   } catch (error) {
-    console.error("Contact form error:", error);
+    console.error("❌ Contact form error:", {
+      code: error?.code,
+      message: error?.message,
+      command: error?.command,
+    });
+
+    // Provide specific error messages for common issues
+    let errorMessage = "Failed to send message. Please try again later.";
+    
+    if (error?.code === "EAUTH") {
+      errorMessage = "Email service authentication failed. Please contact the site owner.";
+      console.error("   💡 Solution: Check SMTP_EMAIL and SMTP_PASSWORD in Vercel environment variables.");
+    } else if (error?.message?.includes("credentials")) {
+      errorMessage = "Email credentials not configured. Please contact the site owner.";
+      console.error("   💡 Solution: Ensure SMTP_EMAIL and SMTP_PASSWORD are set in environment variables.");
+    }
+
     return NextResponse.json(
-      { error: "Failed to send message. Please try again later." },
+      { error: errorMessage },
       { status: 500 }
     );
   }

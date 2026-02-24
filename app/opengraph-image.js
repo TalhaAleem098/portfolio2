@@ -161,7 +161,7 @@ export default function Image() {
               letterSpacing: "1px",
             }}
           >
-            aleemtalha.vercel.app
+            aleemtalha.codes
           </span>
         </div>
       </div>

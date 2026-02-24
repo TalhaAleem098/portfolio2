@@ -145,7 +145,7 @@ export default async function Image({ params }) {
           {/* Branding */}
           <div style={{ position: "absolute", bottom: "20px", left: "72px", display: "flex" }}>
             <span style={{ fontSize: "13px", fontWeight: 700, color: "rgba(255,255,255,0.35)", letterSpacing: "1px" }}>
-              Aleem Talha — aleemtalha.vercel.app
+              Aleem Talha — aleemtalha.codes
             </span>
           </div>
         </div>
