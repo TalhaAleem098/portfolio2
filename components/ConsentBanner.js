@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/set-state-in-effect */
 "use client";
 
 import { useEffect, useState } from "react";
@@ -59,7 +60,7 @@ export default function ConsentBanner() {
   if (!isVisible) return null;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-50 bg-gradient-to-r from-slate-900 to-slate-800 border-t border-slate-700 shadow-2xl">
+    <div className="fixed bottom-0 left-0 right-0 z-50 bg-linear-to-r from-slate-900 to-slate-800 border-t border-slate-700 shadow-2xl">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Header */}
         <div className="mb-6">
@@ -126,7 +127,7 @@ export default function ConsentBanner() {
           </button>
           <button
             onClick={handleAcceptAll}
-            className="px-6 py-2 text-sm font-medium text-slate-900 bg-yellow-400 hover:bg-yellow-300 rounded-lg transition-colors duration-200 font-bold"
+            className="px-6 py-2 text-sm font-medium text-slate-900 bg-yellow-400 hover:bg-yellow-300 rounded-lg transition-colors duration-200"
           >
             Accept All
           </button>
