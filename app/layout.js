@@ -1,4 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import { Suspense } from "react";
+import TopLoader from "@/components/TopLoader";
+import { SITE_URL } from "@/lib/constants";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -10,8 +13,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
-const SITE_URL = "https://aleemtalha.vercel.app";
 
 export const metadata = {
   metadataBase: new URL(SITE_URL),
@@ -53,22 +54,12 @@ export const metadata = {
     title: "Aleem Talha — UI/UX Designer & Full Stack Developer",
     description:
       "Crafting seamless digital experiences through intuitive design and robust development. View my portfolio of 15+ projects.",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Aleem Talha — UI/UX Designer & Full Stack Developer",
-        type: "image/png",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Aleem Talha — UI/UX Designer & Full Stack Developer",
     description:
       "Crafting seamless digital experiences through intuitive design and robust development.",
-    images: ["/og-image.png"],
     creator: "@aleemtalha",
   },
   robots: {
@@ -148,8 +139,20 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+        <link
+          rel="icon"
+          type="image/png"
+          href="/favicon-96x96.png"
+          sizes="96x96"
+        />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <link
+          rel="apple-touch-icon"
+          sizes="180x180"
+          href="/apple-touch-icon.png"
+        />
+        <meta name="apple-mobile-web-app-title" content="Aleem Dev" />
+        <link rel="manifest" href="/site.webmanifest" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
@@ -162,6 +165,9 @@ export default function RootLayout({ children }) {
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <Suspense fallback={null}>
+          <TopLoader />
+        </Suspense>
         {children}
       </body>
     </html>

@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { CONTACT_EMAIL, SOCIAL_LINKS } from "@/lib/constants";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -229,10 +230,10 @@ export default function ContactForm() {
               Email
             </h3>
             <a
-              href="mailto:aleemtalha098@gmail.com"
+              href={`mailto:${CONTACT_EMAIL}`}
               className="text-white/75 text-sm leading-relaxed font-medium hover:text-[#FDF94B] transition-colors duration-200"
             >
-              aleemtalha098@gmail.com
+              {CONTACT_EMAIL}
             </a>
           </div>
 
@@ -278,7 +279,7 @@ export default function ContactForm() {
             </h3>
             <div className="flex items-center gap-4">
               <a
-                href="https://github.com/AleemTalha"
+                href={SOCIAL_LINKS.github}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="GitHub"
@@ -287,7 +288,7 @@ export default function ContactForm() {
                 <FaGithub size={18} />
               </a>
               <a
-                href="https://www.linkedin.com/in/talha-aleem-a275a72a6/"
+                href={SOCIAL_LINKS.linkedin}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="LinkedIn"
@@ -296,7 +297,7 @@ export default function ContactForm() {
                 <FaLinkedinIn size={18} />
               </a>
               <a
-                href="https://www.instagram.com/aleemtalha_dev/"
+                href={SOCIAL_LINKS.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"

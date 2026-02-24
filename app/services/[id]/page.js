@@ -34,20 +34,11 @@ export async function generateMetadata({ params }) {
       description,
       url: `/services/${service.id}`,
       type: 'article',
-      images: [
-        {
-          url: service.image,
-          width: 800,
-          height: 600,
-          alt: `${service.title} — Aleem Talha`,
-        },
-      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${service.title} — Aleem Talha`,
       description,
-      images: [service.image],
     },
   };
 }

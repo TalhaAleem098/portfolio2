@@ -8,6 +8,7 @@ import {
   FaLinkedin,
   FaWhatsapp,
 } from "react-icons/fa";
+import { CONTACT_EMAIL, SOCIAL_LINKS } from "@/lib/constants";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
@@ -64,12 +65,12 @@ export default function Footer() {
                   Email me for any queries
                 </h3>
                 <a
-                  href="mailto:aleemtalha098@gmail.com"
+                  href={`mailto:${CONTACT_EMAIL}`}
                   className="text-xs md:text-sm lg:text-base xl:text-lg font-black uppercase text-white hover:text-yellow-200 transition break-all"
                 >
-                  ALEEMTALHA098
+                  {CONTACT_EMAIL.split("@")[0].toUpperCase()}
                   <br />
-                  @GMAIL.COM
+                  @{CONTACT_EMAIL.split("@")[1].toUpperCase()}
                 </a>
               </div>
 
@@ -105,7 +106,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <a
-                      href="https://github.com/AleemTalha"
+                      href={SOCIAL_LINKS.github}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[10px] md:text-xs font-medium text-white hover:text-yellow-200 transition uppercase tracking-wide"
@@ -124,7 +125,7 @@ export default function Footer() {
                 <ul className="space-y-1.5 md:space-y-2 lg:space-y-3">
                   <li>
                     <a
-                      href="https://github.com/AleemTalha"
+                      href={SOCIAL_LINKS.github}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[10px] md:text-xs font-medium text-white hover:text-yellow-200 transition uppercase tracking-wide flex items-center gap-2"
@@ -135,7 +136,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <a
-                      href="https://www.instagram.com/aleemtalha_dev/"
+                      href={SOCIAL_LINKS.instagram}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[10px] md:text-xs font-medium text-white hover:text-yellow-200 transition uppercase tracking-wide flex items-center gap-2"
@@ -146,7 +147,7 @@ export default function Footer() {
                   </li>
                   <li>
                     <a
-                      href="https://www.linkedin.com/in/talha-aleem-a275a72a6/"
+                      href={SOCIAL_LINKS.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[10px] md:text-xs font-medium text-white hover:text-yellow-200 transition uppercase tracking-wide flex items-center gap-2"
@@ -184,10 +185,10 @@ export default function Footer() {
                 </p>
                 <p className="text-[10px] md:text-xs font-medium text-white leading-relaxed">
                   <a
-                    href="mailto:aleemtalha098@gmail.com"
+                    href={`mailto:${CONTACT_EMAIL}`}
                     className="hover:text-yellow-200 transition truncate"
                   >
-                    aleemtalha098@gmail.com
+                    {CONTACT_EMAIL}
                   </a>
                 </p>
               </div>

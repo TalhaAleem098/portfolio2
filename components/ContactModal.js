@@ -12,6 +12,48 @@ export default function ContactModal({ isOpen, onClose }) {
   const [phase, setPhase] = useState("closed"); // closed | entering | open | leaving
   const overlayRef = useRef(null);
 
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+  const [status, setStatus] = useState("idle"); // idle | sending | success | error
+  const [statusMessage, setStatusMessage] = useState("");
+
+  const handleChange = (e) => {
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!formData.name || !formData.email || !formData.message) {
+      setStatus("error");
+      setStatusMessage("Please fill in all fields.");
+      return;
+    }
+    setStatus("sending");
+    setStatusMessage("");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, subject: "Contact via Modal" }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setStatus("success");
+        setStatusMessage(data.message || "Message sent successfully!");
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setStatus("error");
+        setStatusMessage(data.error || "Something went wrong.");
+      }
+    } catch {
+      setStatus("error");
+      setStatusMessage("Network error. Please try again.");
+    }
+  };
+
   // Derive phase transitions at render time (no effect needed)
   if (isOpen && (phase === "closed" || phase === "leaving")) {
     setPhase("entering");
@@ -97,7 +139,7 @@ export default function ContactModal({ isOpen, onClose }) {
                   ? "opacity-100 translate-y-0"
                   : "opacity-0 translate-y-8"
               }`}
-              onSubmit={(e) => e.preventDefault()}
+              onSubmit={handleSubmit}
             >
               {/* Name */}
               <div>
@@ -106,6 +148,10 @@ export default function ContactModal({ isOpen, onClose }) {
                 </label>
                 <input
                   type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  required
                   className="w-full bg-transparent border-b border-white/30 text-white py-3 outline-none focus:border-[#FDF94B] transition-colors duration-300"
                 />
               </div>
@@ -117,6 +163,10 @@ export default function ContactModal({ isOpen, onClose }) {
                 </label>
                 <input
                   type="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
                   className="w-full bg-transparent border-b border-white/30 text-white py-3 outline-none focus:border-[#FDF94B] transition-colors duration-300"
                 />
               </div>
@@ -128,17 +178,47 @@ export default function ContactModal({ isOpen, onClose }) {
                 </label>
                 <textarea
                   rows={1}
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  required
                   className="w-full bg-transparent border-b border-white/30 text-white py-3 outline-none focus:border-[#FDF94B] transition-colors duration-300 resize-none"
                 />
               </div>
+
+              {/* Status */}
+              {statusMessage && (
+                <p
+                  className={`text-sm text-center py-2 rounded-lg ${
+                    status === "success"
+                      ? "text-green-400 bg-green-400/10"
+                      : "text-red-400 bg-red-400/10"
+                  }`}
+                >
+                  {statusMessage}
+                </p>
+              )}
 
               {/* Send Button */}
               <div className="pt-6">
                 <button
                   type="submit"
-                  className="w-full bg-[#FDF94B] hover:bg-[#e8e410] text-black font-black text-sm tracking-widest uppercase py-4 rounded-full transition-colors duration-300 cursor-pointer"
+                  disabled={status === "sending"}
+                  className="w-full bg-[#FDF94B] hover:bg-[#e8e410] disabled:opacity-60 disabled:cursor-not-allowed text-black font-black text-sm tracking-widest uppercase py-4 rounded-full transition-colors duration-300 cursor-pointer flex items-center justify-center gap-2"
                 >
-                  Send
+                  {status === "sending" ? (
+                    <>
+                      <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+                      </svg>
+                      Sending...
+                    </>
+                  ) : status === "success" ? (
+                    "Sent!"
+                  ) : (
+                    "Send"
+                  )}
                 </button>
               </div>
             </form>

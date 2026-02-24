@@ -35,20 +35,11 @@ export async function generateMetadata({ params }) {
       description,
       url: `/works/${project.id}`,
       type: 'article',
-      images: [
-        {
-          url: project.image,
-          width: 1400,
-          height: 800,
-          alt: `${project.title} — Project by Aleem Talha`,
-        },
-      ],
     },
     twitter: {
       card: 'summary_large_image',
       title: `${project.title} — Aleem Talha`,
       description,
-      images: [project.image],
     },
   };
 }

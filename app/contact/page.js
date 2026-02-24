@@ -20,14 +20,6 @@ export const metadata = {
     description: "Get in touch with Aleem Talha for your design and development projects.",
     url: "/contact",
     type: "website",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Contact Aleem Talha",
-      },
-    ],
   },
 };
 

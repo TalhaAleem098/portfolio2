@@ -27,14 +27,6 @@ export const metadata = {
       "Web Design, App Design, Front-End & Back-End Development, and 360 Full-Stack solutions by Aleem Talha.",
     url: "/services",
     type: "website",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Aleem Talha — Services",
-      },
-    ],
   },
 };
 

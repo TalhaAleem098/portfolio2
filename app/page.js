@@ -26,21 +26,12 @@ export const metadata = {
       'Crafting seamless digital experiences through intuitive design and robust development. View my portfolio of web design, app design, and full-stack projects.',
     url: '/',
     type: 'website',
-    images: [
-      {
-        url: '/og-image.png',
-        width: 1200,
-        height: 630,
-        alt: 'Aleem Talha — UI/UX Designer & Full Stack Developer',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Aleem Talha — UI/UX Designer & Full Stack Developer',
     description:
       'Crafting seamless digital experiences through intuitive design and robust development.',
-    images: ['/og-image.png'],
   },
 };
 
