@@ -2,6 +2,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Suspense } from "react";
 import TopLoader from "@/components/TopLoader";
 import { SITE_URL } from "@/lib/constants";
+import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -167,6 +168,7 @@ export default function RootLayout({ children }) {
       >
         <Suspense fallback={null}>
           <TopLoader />
+          <Analytics />
         </Suspense>
         {children}
       </body>
