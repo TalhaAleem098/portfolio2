@@ -36,9 +36,9 @@ export default function ProjectCTA() {
   }, []);
 
   return (
-    <div ref={sectionRef} className="bg-white mx-1 lg:mx-5">
+    <div ref={sectionRef} className="bg-white section-wrapper">
       <div className="min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh] flex items-center">
-        <div className="w-full mx-auto px-3 md:px-6 lg:px-12 xl:px-16 py-10 md:py-16 lg:py-24">
+        <div className="w-full mx-auto section-padding">
 
           {/* Main Heading */}
           <h2 ref={headingRef} style={HIDE} className="text-2xl md:text-3xl lg:text-5xl xl:text-6xl font-black tracking-tight leading-[1.05] uppercase">

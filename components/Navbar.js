@@ -247,12 +247,12 @@ export default function Navbar({
       className="absolute lg:relative left-1/2 lg:left-0 transform lg:transform-none -translate-x-1/2 lg:translate-x-0 text-white cursor-pointer font-bold tracking-wide hover:text-[#FDF94B] transition-colors duration-200"
     >
       <span className={brandClass}>
-        ALEEM{"."}
+        ALEEM
         <span
           className={`font-extrabold ${isFixed ? "text-xs lg:text-base xl:text-xl" : "text-xs lg:text-lg xl:text-xl"}`}
         >
           Talha
-        </span>
+        </span> 
       </span>
     </Link>
   );

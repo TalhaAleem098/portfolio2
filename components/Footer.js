@@ -53,12 +53,10 @@ export default function Footer() {
   }, []);
 
   return (
-    <div className="bg-white mx-1 lg:mx-5">
-      <div className="p-1 md:p-2 lg:p-3">
-        <footer ref={sectionRef} className="bg-[#5477CC] py-8 md:py-10 px-3 md:px-6 lg:px-12 xl:px-16 flex flex-col justify-between">
-          <div className="py-8 md:py-12 lg:py-16">
-            {/* Main Footer Content */}
-            <div ref={gridRef} style={HIDE} className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10 xl:gap-12 mb-8 md:mb-10 lg:mb-12 pb-8 md:pb-10 lg:pb-12 border-b border-white/30">
+    <div className="bg-white section-wrapper">
+      <footer ref={sectionRef} className="bg-[#5477CC] section-padding flex flex-col justify-between">
+        {/* Main Footer Content */}
+        <div ref={gridRef} style={HIDE} className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8 lg:gap-10 xl:gap-12 mb-8 md:mb-10 lg:mb-12 pb-8 md:pb-10 lg:pb-12 border-b border-white/30">
               {/* Email Section */}
               <div>
                 <h3 className="text-[10px] md:text-xs font-black uppercase tracking-widest text-white mb-2 md:mb-4">
@@ -194,15 +192,13 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Copyright */}
-            <div ref={copyrightRef} style={HIDE} className="text-center">
-              <p className="text-[10px] md:text-xs font-medium text-white uppercase tracking-wide">
-                {new Date().getFullYear()}&copy; ALEEM TALHA. ALL RIGHTS RESERVED
-              </p>
-            </div>
-          </div>
-        </footer>
-      </div>
+        {/* Copyright */}
+        <div ref={copyrightRef} style={HIDE} className="text-center">
+          <p className="text-[10px] md:text-xs font-medium text-white uppercase tracking-wide">
+            {new Date().getFullYear()}&copy; ALEEM TALHA. ALL RIGHTS RESERVED
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

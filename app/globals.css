@@ -142,6 +142,29 @@ body, html {
   .text-nav-base {
     @apply text-sm leading-none;
   }
+  
+  /* ===== Section Padding System ===== */
+  /* Consistent spacing across all page sections */
+  
+  /* Section outer wrapper - controls gap between edge of viewport and section */
+  .section-wrapper {
+    @apply mx-1 lg:mx-5;
+  }
+  
+  /* Section content padding - horizontal spacing inside sections */
+  .section-px {
+    @apply px-3 md:px-6 lg:px-10 xl:px-12;
+  }
+  
+  /* Section content padding - vertical spacing inside sections */
+  .section-py {
+    @apply py-8 md:py-12 lg:py-16;
+  }
+  
+  /* Combined section padding for inner content areas */
+  .section-padding {
+    @apply px-3 md:px-6 lg:px-10 xl:px-12 py-8 md:py-12 lg:py-16;
+  }
 }
 
 /* Hide scrollbar for horizontal scroll sections */

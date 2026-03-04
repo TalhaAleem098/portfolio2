@@ -4,11 +4,7 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { FaGithub, FaInstagram, FaWhatsapp, FaLinkedin } from "react-icons/fa";
 import { useState, useEffect, useRef } from "react";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
 import Navbar from "./Navbar";
-
-gsap.registerPlugin(useGSAP);
 
 const SOCIAL_LINKS = [
   { href: "https://github.com/AleemTalha", label: "GitHub", icon: FaGithub },
@@ -36,10 +32,10 @@ const SocialIcons = ({ size = 14, gap = "gap-3" }) => (
   </div>
 );
 
-// This object is applied as an inline style prop at JSX render time.
-// It runs BEFORE the first browser paint — so elements are never visible
-// until GSAP explicitly makes them visible during animation.
-const HIDE = { opacity: 0, transform: "translateY(20px)" };
+// CSS class for entrance animation
+const ENTRANCE_BASE = "transition-all duration-500 ease-out";
+const ENTRANCE_HIDDEN = "opacity-0 translate-y-5";
+const ENTRANCE_VISIBLE = "opacity-100 translate-y-0";
 
 export default function Hero() {
   const [active, setActive] = useState("HOME");
@@ -47,21 +43,7 @@ export default function Hero() {
   const [showFixedNav, setShowFixedNav] = useState(false);
   const pathname = usePathname();
 
-  const heroRef        = useRef(null);
-  const leftHeadRef    = useRef(null);
-  const leftDescRef    = useRef(null);
-  const imgRef         = useRef(null);
-  const rightTopRef    = useRef(null);
-  const rightBotRef    = useRef(null);
-  const mobIconsRef    = useRef(null);
-  const mobImgRef      = useRef(null);
-
-  // Tablet-specific refs (needed because tablet & desktop render separately)
-  const tabLeftHeadRef  = useRef(null);
-  const tabLeftDescRef  = useRef(null);
-  const tabImgRef       = useRef(null);
-  const tabRightTopRef  = useRef(null);
-  const tabRightBotRef  = useRef(null);
+  const heroRef = useRef(null);
 
   const handleNavClick = (item) => {
     setActive(item);
@@ -113,63 +95,54 @@ export default function Hero() {
     return () => observer.disconnect();
   }, []);
 
-  // useGSAP runs synchronously before browser paint in the same microtask
-  // as layout — no flash possible. scope: heroRef for automatic cleanup.
-  useGSAP(
-    () => {
-      const w = window.innerWidth;
-      const mobile = w < 768;
-      const tablet = w >= 768 && w < 1024;
+  useEffect(() => {
+    const w = window.innerWidth;
+    const mobile = w < 768;
+    
+    if (mobile) return;
 
-      if (mobile) {
-        // Mobile: icons → image
-        gsap.timeline({ defaults: { ease: "power2.out" } })
-          .to(mobIconsRef.current, {
-            opacity: 1, y: 0, duration: 0.4, delay: 0.15,
-          })
-          .to(mobImgRef.current, {
-            opacity: 1, y: 0, duration: 0.55,
-          }, "-=0.1");
-      } else if (tablet) {
-        // Tablet: animate tablet-specific refs
-        gsap.timeline({ defaults: { ease: "power2.out" } })
-          .to(tabLeftHeadRef.current, {
-            opacity: 1, y: 0, duration: 0.45, delay: 0.15,
-          })
-          .to(tabLeftDescRef.current, {
-            opacity: 1, y: 0, duration: 0.4,
-          }, "-=0.2")
-          .to(tabImgRef.current, {
-            opacity: 1, y: 0, duration: 0.5,
-          }, "-=0.2")
-          .to(tabRightTopRef.current, {
-            opacity: 1, y: 0, duration: 0.4,
-          }, "-=0.25")
-          .to(tabRightBotRef.current, {
-            opacity: 1, y: 0, duration: 0.4,
-          }, "-=0.2");
-      } else {
-        // Desktop: animate desktop-specific refs
-        gsap.timeline({ defaults: { ease: "power2.out" } })
-          .to(leftHeadRef.current, {
-            opacity: 1, y: 0, duration: 0.45, delay: 0.15,
-          })
-          .to(leftDescRef.current, {
-            opacity: 1, y: 0, duration: 0.4,
-          }, "-=0.2")
-          .to(imgRef.current, {
-            opacity: 1, y: 0, duration: 0.5,
-          }, "-=0.2")
-          .to(rightTopRef.current, {
-            opacity: 1, y: 0, duration: 0.4,
-          }, "-=0.25")
-          .to(rightBotRef.current, {
-            opacity: 1, y: 0, duration: 0.4,
-          }, "-=0.2");
-      }
-    },
-    { scope: heroRef }
-  );
+    let ticking = false;
+    const heroEl = heroRef.current;
+    if (!heroEl) return;
+
+    const handleScroll = () => {
+      if (ticking) return;
+      ticking = true;
+
+      requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        const viewportHeight = window.innerHeight;
+        
+        const progress = Math.min(Math.max(scrollY / (viewportHeight * 0.7), 0), 1);
+
+        const isTablet = w >= 768 && w < 1024;
+        const maxScale = isTablet ? 0.15 : 0.2;
+        const scale = 1 - (progress * maxScale);
+        const baseBorderRadius = isTablet ? 8 : 30;
+        const borderRadius = baseBorderRadius + (progress * 30);
+        const opacity = 1 - progress;
+
+        heroEl.style.transform = `scale(${scale})`;
+        heroEl.style.borderRadius = `${borderRadius}px`;
+        heroEl.style.opacity = opacity;
+        heroEl.style.visibility = progress >= 1 ? 'hidden' : 'visible';
+        heroEl.style.pointerEvents = progress >= 0.5 ? 'none' : 'auto';
+
+        ticking = false;
+      });
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const [isLoaded, setIsLoaded] = useState(false);
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoaded(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
 
   const navProps = {
     active, mobileMenuOpen, setMobileMenuOpen,
@@ -180,7 +153,8 @@ export default function Hero() {
     <div
       id="hero-section"
       ref={heroRef}
-      className="bg-white mb-0 border-2 md:border-3 lg:border-6 xl:border-8 border-black rounded-lg lg:rounded-[30px] box-border"
+      className="fixed top-1 md:top-2 lg:top-3 xl:top-4 left-1 md:left-2 lg:left-3 xl:left-4 right-1 md:right-2 lg:right-3 xl:right-4 bg-white border-2 md:border-3 lg:border-6 xl:border-8 border-black rounded-lg lg:rounded-[30px] box-border will-change-transform z-10"
+      style={{ transformOrigin: "center center" }}
     >
       <div className="xl:p-6 p-2">
         <div className="bg-[#5477CC] min-h-[90vh] md:min-h-0 h-full flex flex-col md:block">
@@ -197,19 +171,16 @@ export default function Hero() {
               Aleem Talha
             </span>
 
-            {/* Hidden at render time via inline style — GSAP animates it in */}
             <div
-              ref={mobIconsRef}
-              style={HIDE}
-              className="absolute top-4 left-0 right-0 flex justify-center gap-3 z-10"
+              className={`absolute top-4 left-0 right-0 flex justify-center gap-3 z-10 ${ENTRANCE_BASE} ${isLoaded ? ENTRANCE_VISIBLE : ENTRANCE_HIDDEN}`}
+              style={{ transitionDelay: "150ms" }}
             >
               <SocialIcons size={14} />
             </div>
 
             <div
-              ref={mobImgRef}
-              style={HIDE}
-              className="relative flex-1 w-full z-1"
+              className={`relative flex-1 w-full z-1 ${ENTRANCE_BASE} ${isLoaded ? ENTRANCE_VISIBLE : ENTRANCE_HIDDEN}`}
+              style={{ transitionDelay: "300ms" }}
             >
               <Image
                 src="/images/aleem.png"
@@ -227,14 +198,14 @@ export default function Hero() {
           <div className="hidden md:grid lg:hidden grid-cols-12 gap-0 px-6 pt-8 hero-tablet-height ">
             <div className="col-span-4 flex h-full items-center">
               <div className="flex flex-col justify-between h-[65%] items-center">
-                <div ref={tabLeftHeadRef} style={HIDE}>
+                <div className={`${ENTRANCE_BASE} ${isLoaded ? ENTRANCE_VISIBLE : ENTRANCE_HIDDEN}`} style={{ transitionDelay: "150ms" }}>
                   <h1 className="text-3xl md:text-4xl font-black text-white leading-tight tracking-tighter">
                     UI UX
                     <br />
                     DESIGNER
                   </h1>
                 </div>
-                <div ref={tabLeftDescRef} style={HIDE} className="max-w-48">
+                <div className={`max-w-48 ${ENTRANCE_BASE} ${isLoaded ? ENTRANCE_VISIBLE : ENTRANCE_HIDDEN}`} style={{ transitionDelay: "250ms" }}>
                   <p className="text-white text-[11px] leading-relaxed font-medium">
                     I DESIGN INTUITIVE INTERFACES AND DEVELOP USER-CENTRIC SOLUTIONS,
                     BLENDING CREATIVITY AND TECHNICAL EXPERTISE TO CRAFT SEAMLESS
@@ -246,9 +217,8 @@ export default function Hero() {
 
             <div className="col-span-4 flex items-end justify-center">
               <div
-                ref={tabImgRef}
-                style={HIDE}
-                className="relative w-full h-full flex items-end justify-center"
+                className={`relative w-full h-full flex items-end justify-center ${ENTRANCE_BASE} ${isLoaded ? ENTRANCE_VISIBLE : ENTRANCE_HIDDEN}`}
+                style={{ transitionDelay: "350ms" }}
               >
                 <Image
                   src="/images/aleem.png"
@@ -264,14 +234,14 @@ export default function Hero() {
 
             <div className="col-span-4 flex h-full items-center">
               <div className="flex flex-col justify-between h-[75%]">
-                <div ref={tabRightTopRef} style={HIDE} className="max-w-56">
+                <div className={`max-w-56 ${ENTRANCE_BASE} ${isLoaded ? ENTRANCE_VISIBLE : ENTRANCE_HIDDEN}`} style={{ transitionDelay: "450ms" }}>
                   <p className="text-white font-bold text-[11px] mb-3 tracking-widest">FOLLOW ME</p>
                   <SocialIcons size={14} />
                   <p className="text-white text-[11px] leading-relaxed font-medium mt-3">
                     2.5+ YEARS OF EXPERIENCE DELIVERING PIXEL-PERFECT DIGITAL SOLUTIONS
                   </p>
                 </div>
-                <div ref={tabRightBotRef} style={HIDE}>
+                <div className={`${ENTRANCE_BASE} ${isLoaded ? ENTRANCE_VISIBLE : ENTRANCE_HIDDEN}`} style={{ transitionDelay: "550ms" }}>
                   <h2 className="text-3xl md:text-4xl font-black text-white leading-tight tracking-tighter">
                     FULL
                     <br />
@@ -288,14 +258,14 @@ export default function Hero() {
           <div className="hidden lg:grid grid-cols-12 gap-0 px-8 pt-12 min-h-[90vh]">
             <div className="col-span-4 flex h-full items-center">
               <div className="flex flex-col justify-between h-[70%] items-center">
-                <div ref={leftHeadRef} style={HIDE}>
+                <div className={`${ENTRANCE_BASE} ${isLoaded ? ENTRANCE_VISIBLE : ENTRANCE_HIDDEN}`} style={{ transitionDelay: "150ms" }}>
                   <h1 className="lg:text-5xl xl:text-6xl 2xl:text-7xl font-black text-white leading-tight tracking-tighter">
                     UI UX
                     <br />
                     DESIGNER
                   </h1>
                 </div>
-                <div ref={leftDescRef} style={HIDE} className="max-w-sm">
+                <div className={`max-w-sm ${ENTRANCE_BASE} ${isLoaded ? ENTRANCE_VISIBLE : ENTRANCE_HIDDEN}`} style={{ transitionDelay: "250ms" }}>
                   <p className="text-white lg:text-sm xl:text-xs 2xl:text-sm leading-relaxed font-medium">
                     I DESIGN INTUITIVE INTERFACES AND DEVELOP USER-CENTRIC SOLUTIONS,
                     BLENDING CREATIVITY AND TECHNICAL EXPERTISE TO CRAFT SEAMLESS
@@ -307,9 +277,8 @@ export default function Hero() {
 
             <div className="col-span-4 flex items-end justify-center">
               <div
-                ref={imgRef}
-                style={HIDE}
-                className="relative w-full h-full flex items-end justify-center"
+                className={`relative w-full h-full flex items-end justify-center ${ENTRANCE_BASE} ${isLoaded ? ENTRANCE_VISIBLE : ENTRANCE_HIDDEN}`}
+                style={{ transitionDelay: "350ms" }}
               >
                 <Image
                   src="/images/aleem.png"
@@ -325,7 +294,7 @@ export default function Hero() {
 
             <div className="col-span-4 flex h-full items-center">
               <div className="flex flex-col justify-between h-[80%]">
-                <div ref={rightTopRef} style={HIDE} className="max-w-md">
+                <div className={`max-w-md ${ENTRANCE_BASE} ${isLoaded ? ENTRANCE_VISIBLE : ENTRANCE_HIDDEN}`} style={{ transitionDelay: "450ms" }}>
                   <p className="text-white font-bold lg:text-sm xl:text-xs 2xl:text-sm mb-4 tracking-widest">
                     FOLLOW ME
                   </p>
@@ -334,7 +303,7 @@ export default function Hero() {
                     2.5+ YEARS OF EXPERIENCE DELIVERING PIXEL-PERFECT DIGITAL SOLUTIONS
                   </p>
                 </div>
-                <div ref={rightBotRef} style={HIDE}>
+                <div className={`${ENTRANCE_BASE} ${isLoaded ? ENTRANCE_VISIBLE : ENTRANCE_HIDDEN}`} style={{ transitionDelay: "550ms" }}>
                   <h2 className="lg:text-5xl xl:text-6xl 2xl:text-7xl font-black text-white leading-tight tracking-tighter">
                     FULL
                     <br />

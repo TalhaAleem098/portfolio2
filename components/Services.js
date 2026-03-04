@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import { HiArrowUpRight } from "react-icons/hi2";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -10,53 +10,112 @@ import servicesData from "@/public/data/services.json";
 
 gsap.registerPlugin(ScrollTrigger);
 
-const HIDE = { opacity: 0, transform: "translateY(30px)" };
-
 export default function Services() {
   const webDesign = servicesData.find((s) => s.id === "web-design");
   const appDesign = servicesData.find((s) => s.id === "app-design");
   const dev360 = servicesData.find((s) => s.id === "360-development");
 
   const sectionRef = useRef(null);
+  const contentRef = useRef(null);
   const headingRef = useRef(null);
   const card1Ref = useRef(null);
   const card2Ref = useRef(null);
   const card3Ref = useRef(null);
 
+  const [isVisible, setIsVisible] = useState(false);
+
   useEffect(() => {
+    const w = window.innerWidth;
+    const isDesktopOrTablet = w >= 768;
+
+    if (!isDesktopOrTablet) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              setIsVisible(true);
+              observer.disconnect();
+            }
+          });
+        },
+        { threshold: 0.2 }
+      );
+
+      if (sectionRef.current) {
+        observer.observe(sectionRef.current);
+      }
+
+      return () => observer.disconnect();
+    }
+
+    const section = sectionRef.current;
+    const heading = headingRef.current;
+    const card1 = card1Ref.current;
+    const card2 = card2Ref.current;
+    const card3 = card3Ref.current;
+
+    if (!section || !heading || !card1 || !card2 || !card3) return;
+
     const ctx = gsap.context(() => {
+      // Section starts visible, only elements inside animate in
+      gsap.set(section, { opacity: 1 });
+      gsap.set([heading, card1, card2, card3], { opacity: 0, y: 40 });
+
       const tl = gsap.timeline({
         scrollTrigger: {
-          trigger: sectionRef.current,
-          start: "top 80%",
-          toggleActions: "play none none none",
+          trigger: section,
+          start: "top top",
+          end: () => `+=${window.innerHeight}`,
+          scrub: 1,
+          pin: true,
+          pinSpacing: true,
         },
-        defaults: { ease: "power2.out" },
       });
 
-      tl.to(headingRef.current, { opacity: 1, y: 0, duration: 0.5 })
-        .to(card1Ref.current, { opacity: 1, y: 0, duration: 0.5 }, "-=0.2")
-        .to(card2Ref.current, { opacity: 1, y: 0, duration: 0.5 }, "-=0.3")
-        .to(card3Ref.current, { opacity: 1, y: 0, duration: 0.5 }, "-=0.3");
-    }, sectionRef);
+      // Animate in - fade and slide up
+      tl.to(heading, { opacity: 1, y: 0, duration: 0.2 }, 0)
+        .to(card1, { opacity: 1, y: 0, duration: 0.25 }, 0.05)
+        .to(card2, { opacity: 1, y: 0, duration: 0.25 }, 0.1)
+        .to(card3, { opacity: 1, y: 0, duration: 0.25 }, 0.15)
+        .to({}, { duration: 0.3 }, 0.4)
+        // Animate out - only movement, no fade
+        .to(card1, { x: "-100vw", rotation: -15, scale: 0.8, duration: 0.4, ease: "power2.in" }, 0.6)
+        .to(card3, { x: "100vw", rotation: 15, scale: 0.8, duration: 0.4, ease: "power2.in" }, 0.6)
+        .to(card2, { y: "-100vh", scale: 0.8, duration: 0.4, ease: "power2.in" }, 0.65)
+        .to(heading, { y: -80, duration: 0.3 }, 0.65);
+    }, section);
 
     return () => ctx.revert();
   }, []);
+
+  const baseTransition = "transition-all duration-500 ease-out";
+  const hiddenClass = "opacity-0 translate-y-8";
+  const visibleClass = "opacity-100 translate-y-0";
 
   return (
     <div
       ref={sectionRef}
       id="services"
-      className="bg-white mx-1 lg:mx-5 lg:min-h-screen"
+      className="bg-white section-wrapper relative rounded-t-3xl lg:rounded-t-[40px] md:overflow-hidden min-h-screen md:h-screen"
       style={{ boxSizing: "border-box" }}
     >
-      <div className="py-8 md:py-12 lg:py-16 px-3 md:px-6 lg:px-12 xl:px-16 pt-10 md:pt-14 lg:pt-20">
-        <h2 ref={headingRef} style={HIDE} className="text-xl md:text-2xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-[1.05] uppercase mb-4 md:mb-6 lg:mb-0">
+      <div
+        ref={contentRef}
+        className="section-padding"
+      >
+        <h2
+          ref={headingRef}
+          className={`text-xl md:text-2xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-[1.05] uppercase mb-4 md:mb-6 lg:mb-0 will-change-transform ${baseTransition} md:transition-none ${isVisible ? visibleClass : hiddenClass}`}
+        >
           My Services
         </h2>
-        <div className="flex flex-nowrap gap-3 md:gap-4 lg:gap-6 xl:gap-8 items-start overflow-x-auto md:overflow-visible pb-4 md:pb-0 snap-x snap-mandatory md:snap-none scrollbar-hide">
-          <div ref={card1Ref} style={HIDE} className="flex min-w-[70vw] md:min-w-0 md:flex-1 snap-start">
-            <div>
+        <div className="flex flex-nowrap gap-3 md:gap-4 lg:gap-6 xl:gap-8 items-start overflow-x-auto md:overflow-visible pb-4 md:pb-0 snap-x snap-mandatory md:snap-none scrollbar-hide md:pt-4 lg:pt-8">
+          <div
+            ref={card1Ref}
+            className={`flex min-w-[70vw] md:min-w-0 md:flex-1 snap-start will-change-transform ${baseTransition} md:transition-none ${isVisible ? visibleClass : hiddenClass}`}
+            style={{ transitionDelay: "100ms" }}
+          >
+            <div className=" md:rounded-xl md:overflow-hidden md:bg-white">
               <div className="h-6 md:h-12 lg:h-25"></div>
               <div className="relative group overflow-hidden cursor-pointer">
                 <Image
@@ -87,7 +146,11 @@ export default function Services() {
             </div>
           </div>
 
-          <div ref={card2Ref} style={HIDE} className="flex flex-col gap-2 md:gap-3 lg:gap-4 min-w-[70vw] md:min-w-0 md:flex-1 snap-start">
+          <div
+            ref={card2Ref}
+            className={`flex flex-col gap-2 md:gap-3 lg:gap-4 min-w-[70vw] md:min-w-0 md:flex-1 snap-start will-change-transform md:rounded-xl md:overflow-hidden md:bg-white md:p-4 ${baseTransition} md:transition-none ${isVisible ? visibleClass : hiddenClass}`}
+            style={{ transitionDelay: "200ms" }}
+          >
             <div className="relative group overflow-hidden cursor-pointer">
               <Image
                 src={appDesign.image}
@@ -116,7 +179,11 @@ export default function Services() {
             </p>
           </div>
 
-          <div ref={card3Ref} style={HIDE} className="flex flex-col gap-3 md:gap-5 lg:gap-8 min-w-[70vw] md:min-w-0 md:flex-1 snap-start">
+          <div
+            ref={card3Ref}
+            className={`flex flex-col gap-3 md:gap-5 lg:gap-8 min-w-[70vw] md:min-w-0 md:flex-1 snap-start will-change-transform md:rounded-xl md:overflow-hidden md:bg-white md:p-4 ${baseTransition} md:transition-none ${isVisible ? visibleClass : hiddenClass}`}
+            style={{ transitionDelay: "300ms" }}
+          >
             <p className="text-[10px] md:text-xs xl:text-sm font-medium uppercase tracking-wider text-gray-500 leading-relaxed pt-1 md:pt-2">
               I offer a range of services that blend design and development to
               create seamless, user-focused digital solutions

@@ -68,9 +68,8 @@ export default function WorkProcess() {
   }, []);
 
   return (
-    <div className="px-1 md:px-0">
-      <div ref={sectionRef} className="bg-white px-1 lg:mx-5">
-        <div className="py-8 md:py-12 lg:py-16 px-3 md:px-6 lg:px-12 xl:px-16 pt-10 md:pt-14 lg:pt-20">
+    <div ref={sectionRef} className="bg-white section-wrapper">
+      <div className="section-padding">
           <h2 ref={headingRef} style={HIDE} className="text-xl md:text-2xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-[1.05] uppercase mb-6 md:mb-10 lg:mb-16">
             My Work Process
           </h2>
@@ -186,6 +185,5 @@ export default function WorkProcess() {
           </div>
         </div>
       </div>
-    </div>
   );
 }

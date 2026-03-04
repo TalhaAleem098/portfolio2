@@ -117,22 +117,20 @@ export default function RecentWorks() {
   }, []);
 
   return (
-    <div className="px-1 lg:px-0">
-      <div className="bg-white px-1 lg:mx-5">
-        <div className="px-2 w-full">
-          <section
-            id="recent-works"
-            ref={sectionRef}
-            className="bg-[#5477CC] min-h-screen overflow-hidden py-10 w-full flex flex-col justify-between"
-          >
-            <div className="px-2 md:px-4 lg:px-6 xl:px-10">
-              <h2 ref={headingRef} style={{ opacity: 0, transform: "translateY(30px)" }} className="text-xl md:text-2xl lg:text-4xl xl:text-5xl font-black text-white text-center md:text-left mb-8">
-                My Recent Works
-              </h2>
-            </div>
+    <div className="bg-white section-wrapper">
+      <section
+        id="recent-works"
+        ref={sectionRef}
+        className="bg-[#5477CC] min-h-screen overflow-hidden py-8 md:py-12 lg:py-16 w-full flex flex-col justify-between"
+      >
+        <div className="section-px">
+          <h2 ref={headingRef} style={{ opacity: 0, transform: "translateY(30px)" }} className="text-xl md:text-2xl lg:text-4xl xl:text-5xl font-black text-white text-center md:text-left mb-8">
+            My Recent Works
+          </h2>
+        </div>
 
-            <div ref={cardsRef} style={{ opacity: 0, transform: "translateY(30px)" }}>
-            <div ref={trackRef} className="flex gap-8 px-6 lg:px-12 pb-10">
+        <div ref={cardsRef} style={{ opacity: 0, transform: "translateY(30px)" }}>
+          <div ref={trackRef} className="flex gap-8 section-px pb-10">
               {projects.map((project) => (
                 <div
                   key={project.title}
@@ -160,49 +158,47 @@ export default function RecentWorks() {
                 </div>
               ))}
             </div>
-            </div>
+          </div>
 
-            <section className="bg-[#5477CC] py-12">
-              <div className=" mx-auto px-6 lg:px-12">
-                <h2 ref={expHeadingRef} style={{ opacity: 0, transform: "translateY(30px)" }} className="text-xl text-center md:text-left md:text-2xl lg:text-4xl xl:text-5xl font-black text-white mb-12">
-                  My Experience
-                </h2>
+          <section className="bg-[#5477CC] py-8 md:py-12">
+            <div className="section-px">
+              <h2 ref={expHeadingRef} style={{ opacity: 0, transform: "translateY(30px)" }} className="text-xl text-center md:text-left md:text-2xl lg:text-4xl xl:text-5xl font-black text-white mb-12">
+                My Experience
+              </h2>
 
-                <div ref={statsRef} style={{ opacity: 0, transform: "translateY(30px)" }} className="grid grid-cols-2  lg:grid-cols-4 gap-10">
-                  {experienceStats.map((stat, idx) => {
-                    const numeric = stat.value.replace("+", "");
-                    const hasPlus = stat.value.includes("+");
+              <div ref={statsRef} style={{ opacity: 0, transform: "translateY(30px)" }} className="grid grid-cols-2 lg:grid-cols-4 gap-10">
+                {experienceStats.map((stat, idx) => {
+                  const numeric = stat.value.replace("+", "");
+                  const hasPlus = stat.value.includes("+");
 
-                    return (
-                      <div
-                        key={idx}
-                        className="flex flex-col md:flex-row items-end justify-between border-b border-white/30 pb-6"
-                      >
-                        <div className="flex w-full">
-                          <span className="text-4xl lg:text-5xl font-black text-white leading-none">
-                            {numeric}
+                  return (
+                    <div
+                      key={idx}
+                      className="flex flex-col md:flex-row items-end justify-between border-b border-white/30 pb-6"
+                    >
+                      <div className="flex w-full">
+                        <span className="text-4xl lg:text-5xl font-black text-white leading-none">
+                          {numeric}
+                        </span>
+                        {hasPlus && (
+                          <span className="text-xl md:text-2xl lg:text-3xl font-bold text-white ml-1">
+                            +
                           </span>
-                          {hasPlus && (
-                            <span className="text-xl md:text-2xl lg:text-3xl font-bold text-white ml-1">
-                              +
-                            </span>
-                          )}
-                        </div>
-
-                        <div className=" md:text-right">
-                          <span className="text-[10px] lg:text-sm uppercase tracking-wider text-white">
-                            {stat.label.split(" ").slice(0, 3).join(" ")}
-                          </span>
-                        </div>
+                        )}
                       </div>
-                    );
-                  })}
-                </div>
+
+                      <div className="md:text-right">
+                        <span className="text-[10px] lg:text-sm uppercase tracking-wider text-white">
+                          {stat.label.split(" ").slice(0, 3).join(" ")}
+                        </span>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
-            </section>
+            </div>
           </section>
-        </div>
+        </section>
       </div>
-    </div>
   );
 }

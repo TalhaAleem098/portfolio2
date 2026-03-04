@@ -63,12 +63,11 @@ export default function MyWorkstation() {
   }, []);
 
   return (
-    <div className="bg-white mx-1 lg:mx-5">
-      <div className="px-1 md:px-2 lg:px-3">
-        <section
-          ref={sectionRef}
-          className="bg-[#5477CC] overflow-hidden py-8 md:py-12 lg:py-16 px-3 md:px-6 lg:px-12 xl:px-16 min-h-screen flex flex-col justify-between"
-        >
+    <div className="bg-white section-wrapper">
+      <section
+        ref={sectionRef}
+        className="bg-[#5477CC] overflow-hidden section-padding min-h-screen flex flex-col justify-between"
+      >
           <h2 ref={headingRef} style={HIDE} className="text-xl md:text-2xl lg:text-4xl xl:text-5xl font-black tracking-tight leading-[1.05] uppercase text-white mb-6 md:mb-8 lg:mb-12">
             My Workstation
           </h2>
@@ -170,6 +169,5 @@ export default function MyWorkstation() {
           </div>
         </section>
       </div>
-    </div>
   );
 }

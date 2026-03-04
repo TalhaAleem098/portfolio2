@@ -11,15 +11,18 @@ import Footer from '@/components/Footer';
 
 export default function HomeContent() {
   return (
-    <div className="px-1.5 md:px-3 lg:px-4 xl:px-6 pt-1.5 md:pt-3 lg:pt-4 xl:pt-6 pb-0 min-h-screen max-w-full overflow-x-hidden">
+    <div className="min-h-screen max-w-full overflow-x-hidden">
       <Hero />
-      <Services />
-      <RecentWorks />
-      <WorkProcess />
-      <Testimonials />
-      <MyWorkstation />
-      <ProjectCTA />
-      <Footer />
+      <div className="h-screen md:h-[100vh]" aria-hidden="true" />
+      <div className="relative z-20">
+        <Services />
+        <RecentWorks />
+        <WorkProcess />
+        <Testimonials />
+        <MyWorkstation />
+        <ProjectCTA />
+        <Footer />
+      </div>
     </div>
   );
 }
