@@ -57,7 +57,6 @@ export default function Services() {
     if (!section || !heading || !card1 || !card2 || !card3) return;
 
     const ctx = gsap.context(() => {
-      // Section starts visible, only elements inside animate in
       gsap.set(section, { opacity: 1 });
       gsap.set([heading, card1, card2, card3], { opacity: 0, y: 40 });
 
@@ -72,13 +71,11 @@ export default function Services() {
         },
       });
 
-      // Animate in - fade and slide up
       tl.to(heading, { opacity: 1, y: 0, duration: 0.2 }, 0)
         .to(card1, { opacity: 1, y: 0, duration: 0.25 }, 0.05)
         .to(card2, { opacity: 1, y: 0, duration: 0.25 }, 0.1)
         .to(card3, { opacity: 1, y: 0, duration: 0.25 }, 0.15)
         .to({}, { duration: 0.3 }, 0.4)
-        // Animate out - only movement, no fade
         .to(card1, { x: "-100vw", rotation: -15, scale: 0.8, duration: 0.4, ease: "power2.in" }, 0.6)
         .to(card3, { x: "100vw", rotation: 15, scale: 0.8, duration: 0.4, ease: "power2.in" }, 0.6)
         .to(card2, { y: "-100vh", scale: 0.8, duration: 0.4, ease: "power2.in" }, 0.65)

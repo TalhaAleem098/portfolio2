@@ -72,9 +72,7 @@ export default function MyWorkstation() {
             My Workstation
           </h2>
 
-          {/* Mobile/Tablet: horizontal scroll, Desktop: 3-col grid */}
           <div className="flex md:grid md:grid-cols-3 gap-4 md:gap-6 lg:gap-8 overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none scrollbar-hide pb-4 md:pb-0">
-            {/* Column 1 */}
             <div ref={col1Ref} style={HIDE} className="min-w-[70vw] md:min-w-0 snap-start flex flex-col gap-3 md:gap-4 lg:gap-8">
               <div className="relative group overflow-hidden cursor-pointer">
                 <Image
@@ -116,9 +114,7 @@ export default function MyWorkstation() {
               </div>
             </div>
 
-            {/* Column 3 - special layout */}
             <div ref={col3Ref} style={HIDE} className="min-w-[70vw] md:min-w-0 snap-start flex flex-col gap-4 md:gap-6 lg:gap-8">
-              {/* Row 1: 7 cols image, 5 cols space */}
               <div className="grid grid-cols-12 gap-4 md:gap-6 lg:gap-8 items-start">
                 <div className="col-span-12 md:col-span-7">
                   <div className="relative group overflow-hidden cursor-pointer">

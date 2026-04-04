@@ -198,5 +198,45 @@
       "clientSatisfaction": "98%",
       "avgDelivery": "4 Weeks"
     }
+  },
+  {
+    "id": "dotnet-development",
+    "title": ".NET Core Development",
+    "tagline": "Enterprise-grade applications built with .NET Core",
+    "shortDescription": "Robust, scalable .NET Core solutions for enterprise applications",
+    "image": "/images/dotnet-dev.png",
+    "aspect": "16/10",
+    "heroDescription": "We build powerful, enterprise-grade applications using .NET Core and C#. From RESTful APIs to complete business applications, we deliver secure, scalable, and maintainable solutions with the latest Microsoft technologies.",
+    "features": [
+      {
+        "title": "ASP.NET Core APIs",
+        "description": "High-performance RESTful and gRPC APIs with proper authentication, authorization, and comprehensive documentation."
+      },
+      {
+        "title": "Entity Framework",
+        "description": "Efficient object-relational mapping with LINQ queries, database migrations, and complex relationship management."
+      },
+      {
+        "title": "Microservices Architecture",
+        "description": "Distributed systems design with service communication, event handling, and deployment strategies."
+      },
+      {
+        "title": "SQL Server Optimization",
+        "description": "Advanced database design, query optimization, stored procedures, and performance tuning for maximum efficiency."
+      }
+    ],
+    "process": [
+      "Requirements & Architecture",
+      "Database Design",
+      "API Development",
+      "Business Logic Implementation",
+      "Testing & Deployment"
+    ],
+    "technologies": [".NET Core 6+", "C#", "ASP.NET", "Entity Framework", "SQL Server"],
+    "stats": {
+      "projectsCompleted": "12+",
+      "clientSatisfaction": "97%",
+      "avgDelivery": "3 Weeks"
+    }
   }
 ]
